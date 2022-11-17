@@ -1,28 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
-import Button from '@mui/material/Button';
-import { Route, Routes, Switch, Link } from "react-router-dom"
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/home";
+import Register from "./pages/register";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Loan Project</h1>
       </header>
-      <body>
-        <Button variant="contained">Test Button</Button>
-      </body>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
     </div>
   );
 }
