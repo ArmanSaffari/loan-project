@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Loan Project</h1>
+        <h1>Kish Non-Profit Financial Community</h1>
       </header>
       <Routes>
         <Route path="/" element={<Home />} />
