@@ -1,18 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button, TextField, Grid } from '@mui/material';
-import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import Input from '@mui/material/Input';
-import FilledInput from '@mui/material/FilledInput';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
-import FormHelperText from '@mui/material/FormHelperText';
-import FormControl from '@mui/material/FormControl';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Button,
+    TextField,
+    Grid,
+    Alert,
+    Collapse,
+    IconButton,
+    OutlinedInput,
+    InputLabel,
+    InputAdornment,
+    FormControl } from '@mui/material';
+import LoginIcon from '@mui/icons-material/Login';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 function Home() {
     const [values, setValues] = React.useState({
@@ -22,6 +23,11 @@ function Home() {
         weightRange: '',
         showPassword: false,
     });
+
+    const [logInAlert, setLogInAlert] = React.useState({
+        text: "",
+        show: false
+    })
     
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
@@ -38,6 +44,22 @@ function Home() {
         event.preventDefault();
     };
 
+    const logInHandler = () => {
+        /*
+        1. send inputed data to the server (API??)
+        2. on server error --> show the feedback
+        3. on valid username and password
+            --> route to "/myProfile"
+            --> send data of the user to myProfile
+        
+        */
+        setLogInAlert(() => {
+            return {
+                text: "username and password don't match!",
+                show: true
+            }
+        });
+    }
 
     return (
         <>
@@ -49,18 +71,37 @@ function Home() {
                         justifyContent: 'center',
                         margin: 'auto'
                     }}>
-                    <Grid item xs={12} sm={6} md={4} sx={{margin: "50px 0"}}>
+                    <Grid item xs={12} sm={10}>
+                        <Collapse in={logInAlert.show}> 
+                            <Alert
+                            severity="error"
+                            variant='filled'
+                            onClose={() => {
+                                setLogInAlert({
+                                    ...logInAlert,
+                                    show: false
+                                });
+                            }}
+                            >{logInAlert.text}</Alert>
+                        </Collapse>
+                    </Grid>
+    
+                    <Grid item xs={10} sm={6} md={4} lg={3} sx={{margin: "10px"}}>
                         
                         <TextField
-                            id="outlined-basic"
-                            label="User Name"
+                            id="username-input"
+                            label="username"
                             variant="outlined"
                             sx={{
                                 width: '100%',
-                                margin: '20px 0'
+                                margin: '20px 0',
                             }}
-                            color="success"/>
-                        
+                            color="success"
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end"><AccountCircleIcon /></InputAdornment>,
+                              }}
+                            />
+
                         <FormControl
                             sx={{ 
                                 margin: '20px 0',
@@ -68,9 +109,9 @@ function Home() {
                                 }}
                             variant="outlined"
                             color="success">
-                            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                            <InputLabel htmlFor="password-input">password</InputLabel>
                             <OutlinedInput
-                                id="outlined-adornment-password"
+                                id="password-input"
                                 type={values.showPassword ? 'text' : 'password'}
                                 value={values.password}
                                 onChange={handleChange('password')}
@@ -82,7 +123,7 @@ function Home() {
                                     onMouseDown={handleMouseDownPassword}
                                     edge="end"
                                     >
-                                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                                    {values.showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
                                     </IconButton>
                                 </InputAdornment>
                                 }
@@ -92,13 +133,15 @@ function Home() {
                         
                         <Button
                             variant="outlined"
-                            startIcon={<LoginOutlinedIcon />}
+                            endIcon={<LoginIcon  />}
                             sx={{
                                 width: '100%',
                                 height: '56px',
-                                margin: '20px 0'
+                                margin: '20px 0',
                             }}
-                            color="success">Login</Button>
+                            color="success"
+                            onClick={logInHandler}>
+                        Login</Button>
                         <div style={{margin: '20px 0'}}>
                             <Link to="/Register">Register</Link>
                         </div>
