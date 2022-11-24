@@ -17,6 +17,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 function Home() {
     const [values, setValues] = React.useState({
+        username: '',
         amount: '',
         password: '',
         weight: '',
@@ -24,13 +25,36 @@ function Home() {
         showPassword: false,
     });
 
+    const [isValid, setIsValid] = React.useState({
+        username: true,
+        password: true
+    })
+
     const [logInAlert, setLogInAlert] = React.useState({
         text: "",
         show: false
     })
     
+    const regEx = {
+        username: new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,}/),
+        password: new RegExp()
+    }
+
+    const handleValidation = (prop) => {
+        setIsValid({
+            ...isValid,
+            [prop]: regEx[prop].test(values[prop])
+        });
+        console.log(values[prop]);
+        console.log(isValid[prop]);
+    };
+
     const handleChange = (prop) => (event) => {
-        setValues({ ...values, [prop]: event.target.value });
+        setValues({
+            ...values,
+            [prop]: event.target.value,
+        });
+        handleValidation(prop);
     };
     
     const handleClickShowPassword = () => {
@@ -44,7 +68,7 @@ function Home() {
         event.preventDefault();
     };
 
-    const logInHandler = () => {
+    const logInHandler = (event) => {
         /*
         1. send inputed data to the server (API??)
         2. on server error --> show the feedback
@@ -53,12 +77,22 @@ function Home() {
             --> send data of the user to myProfile
         
         */
+        event.preventDefault();
         setLogInAlert(() => {
             return {
                 text: "username and password don't match!",
                 show: true
             }
         });
+        setTimeout(()=> {
+            setLogInAlert(() => {
+            return {
+                ...logInAlert,
+                show: false
+            }
+        })}, 5000);
+
+        console.log(values)
     }
 
     return (
@@ -87,67 +121,74 @@ function Home() {
                     </Grid>
     
                     <Grid item xs={10} sm={6} md={4} lg={3} sx={{margin: "10px"}}>
-                        
-                        <TextField
-                            id="username-input"
-                            label="username"
-                            variant="outlined"
-                            sx={{
-                                width: '100%',
-                                margin: '20px 0',
-                            }}
-                            color="success"
-                            InputProps={{
-                                endAdornment: <InputAdornment position="end"><AccountCircleIcon /></InputAdornment>,
-                              }}
-                            />
-
-                        <FormControl
-                            sx={{ 
-                                margin: '20px 0',
-                                width: '100%'
+                        <form action="asdasd" method="GET">      
+                            <TextField
+                                focused
+                                id="username-input"
+                                label="username"
+                                variant="outlined"
+                                onChange={handleChange('username')}
+                                sx={{
+                                    width: '100%',
+                                    margin: '20px 0',
                                 }}
-                            variant="outlined"
-                            color="success">
-                            <InputLabel htmlFor="password-input">password</InputLabel>
-                            <OutlinedInput
-                                id="password-input"
-                                type={values.showPassword ? 'text' : 'password'}
-                                value={values.password}
-                                onChange={handleChange('password')}
-                                endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    edge="end"
-                                    >
-                                    {values.showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                                    </IconButton>
-                                </InputAdornment>
-                                }
-                                label="Password"
+                                color={isValid.username ? "success" : "error"}
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="end"><AccountCircleIcon /></InputAdornment>,
+                                }}
                             />
-                        </FormControl>
-                        
-                        <Button
-                            variant="outlined"
-                            endIcon={<LoginIcon  />}
-                            sx={{
-                                width: '100%',
-                                height: '56px',
-                                margin: '20px 0',
-                            }}
-                            color="success"
-                            onClick={logInHandler}>
-                        Login</Button>
-                        <div style={{margin: '20px 0'}}>
-                            <Link to="/Register">Register</Link>
-                        </div>
-                        <div style={{margin: '20px 0'}}>
+                            <FormControl
+                                focused
+                                sx={{ 
+                                    margin: '20px 0',
+                                    width: '100%'
+                                    }}
+                                variant="outlined"
+                                color={isValid.password ? "success" : "error"}>
+                                <InputLabel htmlFor="password-input">password</InputLabel>
+                                <OutlinedInput
+                                    id="password-input"
+                                    type={values.showPassword ? 'text' : 'password'}
+                                    value={values.password}
+                                    onChange={handleChange('password')}
+                                    endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                        >
+                                        {values.showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                    }
+                                    label="Password"
+                                />
+                            </FormControl>
+                            
+                            <Button
+                                variant="outlined"
+                                component="label"
+                                endIcon={<LoginIcon  />}
+                                sx={{
+                                    width: '100%',
+                                    height: '56px',
+                                    margin: '20px 0',
+                                }}
+                                color="success"
+                                >
+                                Login
+                                <input hidden type="submit"
+                                onClick={logInHandler}/>
+                            </Button>
+                            <div style={{margin: '20px 0'}}>
+                                <Link to="/Register">Register</Link>
+                            </div>
+                            <div style={{margin: '20px 0'}}>
                             <Link to="/forgetPassword">Forget Password</Link>
-                        </div>
+                            </div>
+                        </form>
                     </Grid>
                 </Grid>
             </div>
