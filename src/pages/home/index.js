@@ -17,18 +17,16 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 function Home() {
     const [values, setValues] = React.useState({
-        username: '',
-        amount: '',
-        password: '',
+        username: {
+            value: '',
+            isValid: true},
+        password: {
+            value: '',
+            isValid: true},
         weight: '',
         weightRange: '',
         showPassword: false,
     });
-
-    const [isValid, setIsValid] = React.useState({
-        username: true,
-        password: true
-    })
 
     const [logInAlert, setLogInAlert] = React.useState({
         text: "",
@@ -37,25 +35,24 @@ function Home() {
     
     const regEx = {
         username: new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,}/),
-        password: new RegExp()
+        password: new RegExp(/[a-z0-9._%+-@$#^]{8}/)
     }
 
     const handleValidation = (prop) => {
-        setIsValid({
-            ...isValid,
-            [prop]: regEx[prop].test(values[prop])
-        });
-        console.log(values[prop]);
-        console.log(isValid[prop]);
+        return regEx[prop].test(values[prop].value);
     };
 
-    const handleChange = (prop) => (event) => {
+    const handleChange = () => (event) => {
         setValues({
             ...values,
-            [prop]: event.target.value,
+            [event.target.name]: {
+                value: event.target.value,
+                isValid: handleValidation(event.target.name)
+            }
         });
-        handleValidation(prop);
-    };
+        console.log(values[event.target.name])
+
+        };
     
     const handleClickShowPassword = () => {
       setValues({
@@ -78,12 +75,14 @@ function Home() {
         
         */
         event.preventDefault();
+
         setLogInAlert(() => {
             return {
                 text: "username and password don't match!",
                 show: true
             }
         });
+
         setTimeout(()=> {
             setLogInAlert(() => {
             return {
@@ -92,7 +91,7 @@ function Home() {
             }
         })}, 5000);
 
-        console.log(values)
+        console.log(values);
     }
 
     return (
@@ -127,30 +126,30 @@ function Home() {
                                 id="username-input"
                                 label="username"
                                 variant="outlined"
-                                onChange={handleChange('username')}
-                                sx={{
-                                    width: '100%',
-                                    margin: '20px 0',
-                                }}
-                                color={isValid.username ? "success" : "error"}
+                                name="username"
+                                onChange={handleChange()}
+                                fullWidth
+                                margin="dense"
+                                color="success"
+                                error={!values.username.isValid}
                                 InputProps={{
                                     endAdornment: <InputAdornment position="end"><AccountCircleIcon /></InputAdornment>,
                                 }}
                             />
                             <FormControl
                                 focused
-                                sx={{ 
-                                    margin: '20px 0',
-                                    width: '100%'
-                                    }}
-                                variant="outlined"
-                                color={isValid.password ? "success" : "error"}>
+                                fullWidth
+                                margin="dense"
+                                color="success"
+                                variant="outlined">
                                 <InputLabel htmlFor="password-input">password</InputLabel>
                                 <OutlinedInput
                                     id="password-input"
+                                    name="password"
                                     type={values.showPassword ? 'text' : 'password'}
-                                    value={values.password}
-                                    onChange={handleChange('password')}
+                                    value={values.password.value}
+                                    error={!values.password.isValid}
+                                    onChange={handleChange()}
                                     endAdornment={
                                     <InputAdornment position="end">
                                         <IconButton
@@ -171,10 +170,10 @@ function Home() {
                                 variant="outlined"
                                 component="label"
                                 endIcon={<LoginIcon  />}
+                                fullWidth
                                 sx={{
-                                    width: '100%',
                                     height: '56px',
-                                    margin: '20px 0',
+                                    margin: '10px 0',
                                 }}
                                 color="success"
                                 >
