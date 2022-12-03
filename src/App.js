@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/home";
+import LogIn from "./pages/login";
 import Register from "./pages/register";
 
 function App() {
@@ -9,8 +9,9 @@ function App() {
         <h1>Kish Non-Profit Financial Community</h1>
       </header>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<LogIn />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<h1>authentication passed!</h1>}  />
       </Routes>
     </div>
   );
