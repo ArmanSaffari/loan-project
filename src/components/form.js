@@ -8,10 +8,11 @@ import { TextField,
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Controller } from "react-hook-form";
+import { type } from "@testing-library/user-event/dist/type";
 
 
 // form components:
-const TextInput = ({ name, control, label, rules, icon}) => {
+const TextInput = ({ name, control, label, rules, icon, size, type}) => {
 	return (
 		<Controller
 			name={name}
@@ -22,6 +23,7 @@ const TextInput = ({ name, control, label, rules, icon}) => {
 				fieldState: { isTouched, isDirty, error },
 			}) => (
 				<TextField
+					type={type}
 					value={value}
 					onChange={onChange}
 					onBlur={onBlur}
@@ -30,6 +32,7 @@ const TextInput = ({ name, control, label, rules, icon}) => {
 					label={label}
 					color="success"
 					margin="dense"
+					size={size}
 					fullWidth
 					InputProps={{
 						endAdornment: <InputAdornment position="end">{icon}</InputAdornment>,
@@ -40,7 +43,7 @@ const TextInput = ({ name, control, label, rules, icon}) => {
 	)
 };
 
-const PasswordInput = ({name, control, label, rules, type, show, handleClickShowPassword}) => {
+const PasswordInput = ({name, control, label, rules, type, show, handleClickShowPassword, size}) => {
 	return (
 		<Controller
 			name={name}
@@ -56,8 +59,9 @@ const PasswordInput = ({name, control, label, rules, type, show, handleClickShow
 					>
 					<InputLabel htmlFor={`${name}-input`}
 						color="success"
+						size={size}
 						error={Boolean(error)}
-						>password</InputLabel>
+						>{label}</InputLabel>
 					<OutlinedInput id={`${name}-input`}
 						onChange={onChange}
 						type={type}
@@ -67,12 +71,14 @@ const PasswordInput = ({name, control, label, rules, type, show, handleClickShow
 						margin="dense"
 						color="success"
 						variant="outlined"
+						size={size}
 						control={control}
 						rules={{ required: true }}
 						label={label}
 						endAdornment={
 						<InputAdornment position="end">
 								<IconButton
+								id={`${name}Show`}
 								aria-label="toggle password visibility"
 								onClick={handleClickShowPassword}
 								onMouseDown={(event) => event.preventDefault}

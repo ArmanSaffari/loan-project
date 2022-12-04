@@ -24,7 +24,7 @@ function LogIn() {
   const handleClickShowPassword = () => {
     setValues({
     	...values,
-      showPassword: !values.showPassword,
+      showPassword: !values.showPassword
       });
   };
 
@@ -44,8 +44,6 @@ function LogIn() {
 		const response = await fetch('http://localhost:4000/api/user/signin', requestOptions)
 		const responseObj = await response.json();	
 		if (!response.ok) {throw responseObj.error}
-		// const token = responseObj.token;
-		// console.log(token)
 		navigate("/dashboard", {state: responseObj.token})
 		} catch (error) {
 				console.log(error)
