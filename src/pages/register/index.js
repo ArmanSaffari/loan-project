@@ -7,11 +7,13 @@ import { Button,
     Alert,
     Collapse,
     IconButton,
+		Select,
+		MenuItem,
 		FormGroup} from '@mui/material';
 import LoginIcon from '@mui/icons-material/Login';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { useForm, Controller } from "react-hook-form";
-import { TextInput, PasswordInput } from "../../components/form"
+import { TextInput, PasswordInput, SelectInput } from "../../components/form"
 import MarkunreadMailboxIcon from '@mui/icons-material/MarkunreadMailbox';
 import EmailIcon from '@mui/icons-material/Email';
 import HomeIcon from '@mui/icons-material/Home';
@@ -19,16 +21,19 @@ import SmartphoneIcon from '@mui/icons-material/Smartphone';
 import NumbersIcon from '@mui/icons-material/Numbers';
 import PersonIcon from '@mui/icons-material/Person';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import { CountertopsOutlined } from "@mui/icons-material";
 
 function Register() {
   const [values, setValues] = React.useState({
 		passwordShow: false,
 		reEnterPasswordShow: false,
+		password: "",
 		alertText: "",
-		alertShow: false
+		alertShow: false,
+		imgAddress: "logo512.png"
 });
 
-	const { handleSubmit, control } = useForm();
+	const { handleSubmit, control, getValues } = useForm();
 	const navigate = useNavigate();
 
   const handleClickShowPassword = (event) => {
@@ -41,21 +46,39 @@ function Register() {
 			console.log(values[prop])
 	}
 
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
+    const handleMouseDownPassword = (event) => { 
+			event.preventDefault();
     };
 
-    const registerHandler = (event) => {
-			console.log(event)
-    };
+    const registerHandler = async (event) => {
+			const registerData = event;
+			delete registerData.reEnterPassword;
+			console.log(JSON.stringify(registerData));
+			try {
+				const requestOptions = {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(registerData)
+				}
+			const response = await fetch('http://localhost:4000/api/user/register', requestOptions)
+			const responseObj = await response.json();	
+			if (!response.ok) {throw responseObj.error}
+			navigate("/dashboard", {state: responseObj.token})
+			} catch (error) {
+				console.log(error)
+				setValues({
+					...values,
+					alertText: error.message,
+					alertShow: true
+				})
+			}
+		};
 
-    const EmploymentStatusOptions = [
-			{label:"permanent full-time", id: 1},
-			{label:"temporary full-time", id: 2},
-			{label:"part-time", id: 3}
-		];
-    
-		// const EmploymentStatusOptions = ["permanent full-time", "temporary full-time", "part-time"];
+		const handleFileUpload = (event) => {
+			console.log(event.target.files[0]);
+		};
+
+		const EmploymentStatusOptions = ["permanent full-time", "temporary full-time", "part-time"];
 
 	return (
 		<>
@@ -67,10 +90,10 @@ function Register() {
 					justifyContent: 'center',
 						}}>
 				<Grid item xs={12} sm={10}>
-					<Collapse in={alert.show}> 
+					<Collapse in={values.alertShow}> 
 						<Alert
 						severity="error"
-						variant='filled'
+						variant="filled"
 						onClose={() => {
 							setValues({
 								...values,
@@ -84,7 +107,6 @@ function Register() {
 
         <Grid item xs={10} sm={6} md={4} sx={{margin: '10px'}}>
           <form onSubmit={handleSubmit(registerHandler)}>
-						<h3 className="registerTitle">Personal Information</h3>      
 						<TextInput
 							name="firstName"
 							control={control}
@@ -119,31 +141,12 @@ function Register() {
 							rules={{ required: true }}
 							icon={<NumbersIcon />}/>
 
-						<Controller
-							name="employmentStatus"
-							control={control}
-							rules={{ required: true }}
-							render={({
-								field: { onChange, onBlur, value, name, ref },
-								fieldState: { isTouched, isDirty, error },
-							}) => (
-								<Autocomplete id="EmploymentStatus"
-									// value={value}
-									// onChaneg={onChange}
-									clearOnEscape
-									options={EmploymentStatusOptions}
-									fullWidth
-									renderInput={(params) => 
-										<TextField {...params}
-											onChaneg={onChange}
-											value={value}
-											inputRef={ref}
-											label="Employment Status"
-											error={Boolean(error)}
-											size="small"
-											margin="dense"/>
-										}/>
-							)}
+						<SelectInput
+						control={control}
+						name="employmentStatus"
+						label="Employment Status"
+						options={EmploymentStatusOptions}
+						rules={{ required: true }}
 						/>
 
 						<h3 className="registerTitle">Login Information</h3>      
@@ -173,7 +176,9 @@ function Register() {
 							control={control}
 							label="Re Enter Password"
 							size="small"
-							rules={{required: true}}
+							rules={{required: true,
+								validate: {equalPasswords: value => value === getValues("password")}
+							}}
 							show={values.reEnterPasswordShow}
 							type={values.reEnterPasswordShow ? 'text' : 'password'}
 							handleClickShowPassword={handleClickShowPassword}
@@ -206,16 +211,16 @@ function Register() {
 						
             <h3 className="registerTitle">Photo Upload
 							<span><IconButton color="dark" aria-label="upload picture" component="label">
-									<input hidden accept="image/*" type="file" name="userPictureAddress" />
+									<input hidden accept="image/*" type="file" name="userPhotoFile" onChange={handleFileUpload} />
 									<PhotoCamera />
 							</IconButton></span></h3>        
 							{/* UserPicture */}
 							<div 
 							sx={{ width: '100%',
 										border: '1px dashed grey',
-										// aspectRatio: 1
 										}}>
-									<img src=".\logo512.png"
+									<img
+									src={values.imgAddress}
 									alt="user"
 									width="100%"/>
 							</div>

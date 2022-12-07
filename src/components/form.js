@@ -4,12 +4,13 @@ import { TextField,
 	OutlinedInput,
 	InputLabel,
 	InputAdornment,
-	FormControl } from '@mui/material';
+	FormControl,
+	Select,
+	MenuItem,
+Autocomplete } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { Controller } from "react-hook-form";
-import { type } from "@testing-library/user-event/dist/type";
-
+import { Controller, useController } from "react-hook-form";
 
 // form components:
 const TextInput = ({ name, control, label, rules, icon, size, type}) => {
@@ -93,4 +94,43 @@ const PasswordInput = ({name, control, label, rules, type, show, handleClickShow
 	)
 };
 
-export { TextInput, PasswordInput }
+function SelectInput({ control, name, label, rules, options }) {
+	const optionList = options.map((option) =>
+	<MenuItem value={option}>{option}</MenuItem>
+	);
+  return (
+		<Controller
+			name={name}
+			rules={rules}
+			control={control}
+			render={({
+				field: { onChange, onBlur, value, name, ref },
+				fieldState: { isTouched, isDirty, error },
+			}) => (
+				<FormControl
+				fullWidth
+				margin="dense"
+				size="small"
+				color="success"
+				error={Boolean(error)}
+				variant="outlined"
+				control={control}>
+					<InputLabel htmlFor={`${name}-input`}
+						color="success"
+						size="small"
+						error={Boolean(error)}
+						>{label}</InputLabel>
+					<Select
+						id={`${name}-input`}
+						onChange={onChange}
+						value={value}
+						label={label}
+					>{optionList}</Select>
+				</FormControl>
+			)}
+		/>
+  );
+}
+
+
+export { TextInput, PasswordInput, SelectInput }

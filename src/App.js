@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import LogIn from "./pages/login";
 import Register from "./pages/register";
+import GetImage from "./pages/getImage";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<LogIn />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<h1>authentication passed!</h1>}  />
+        <Route path="/getImage" element={<GetImage />} />
       </Routes>
     </div>
   );
