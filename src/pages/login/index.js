@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate, useNavigation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button,
 	Grid,
 	Alert,
@@ -44,7 +44,13 @@ function LogIn() {
 		const response = await fetch('http://localhost:4000/api/user/signin', requestOptions)
 		const responseObj = await response.json();	
 		if (!response.ok) {throw responseObj.error}
-		navigate("/dashboard", {state: responseObj.token})
+		navigate("/dashboard", {
+			state:{
+				message: responseObj.message,
+				token: responseObj.token
+			}
+		});
+			// token: responseObj.token}})
 		} catch (error) {
 				console.log(error)
 			setValues({

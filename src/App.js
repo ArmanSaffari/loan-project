@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import LogIn from "./pages/login";
 import Register from "./pages/register";
-import GetImage from "./pages/getImage";
+import Dashboard from "./pages/dashboard";
 
 function App() {
   return (
@@ -12,8 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LogIn />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<h1>authentication passed!</h1>}  />
-        <Route path="/getImage" element={<GetImage />} />
+        <Route path="/dashboard" element={<Dashboard />}  />
       </Routes>
     </div>
   );

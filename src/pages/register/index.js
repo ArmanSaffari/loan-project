@@ -1,18 +1,12 @@
-import React from "react";
-import { Form, Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button,
-    TextField,
-    Autocomplete,
     Grid,
     Alert,
     Collapse,
-    IconButton,
-		Select,
-		MenuItem,
-		FormGroup} from '@mui/material';
-import LoginIcon from '@mui/icons-material/Login';
+    IconButton} from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { TextInput, PasswordInput, SelectInput } from "../../components/form"
 import MarkunreadMailboxIcon from '@mui/icons-material/MarkunreadMailbox';
 import EmailIcon from '@mui/icons-material/Email';
@@ -21,16 +15,14 @@ import SmartphoneIcon from '@mui/icons-material/Smartphone';
 import NumbersIcon from '@mui/icons-material/Numbers';
 import PersonIcon from '@mui/icons-material/Person';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-import { CountertopsOutlined } from "@mui/icons-material";
 
 function Register() {
-  const [values, setValues] = React.useState({
+  const [values, setValues] = useState({
 		passwordShow: false,
 		reEnterPasswordShow: false,
-		password: "",
 		alertText: "",
 		alertShow: false,
-		imgAddress: "logo512.png"
+		imgFile: null
 });
 
 	const { handleSubmit, control, getValues } = useForm();
@@ -43,7 +35,6 @@ function Register() {
       	...values,
       	[prop]: !values[prop]
   		});
-			console.log(values[prop])
 	}
 
     const handleMouseDownPassword = (event) => { 
@@ -53,17 +44,25 @@ function Register() {
     const registerHandler = async (event) => {
 			const registerData = event;
 			delete registerData.reEnterPassword;
-			console.log(JSON.stringify(registerData));
 			try {
+				let formData = new FormData();
+				formData.append('userData', JSON.stringify(registerData));
+				formData.append('userPhoto', values.imgFile);
+
 				const requestOptions = {
 					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(registerData)
+				//	headers: { 'Content-Type': 'multipart/form-data' },
+					body: formData
 				}
-			const response = await fetch('http://localhost:4000/api/user/register', requestOptions)
+				
+			const response = await fetch('http://localhost:4000/api/user/registerWithPhoto', requestOptions)
 			const responseObj = await response.json();	
 			if (!response.ok) {throw responseObj.error}
-			navigate("/dashboard", {state: responseObj.token})
+			navigate("/dashboard", {
+				state: { 
+					message: responseObj.message,
+					token: responseObj.token}
+			});
 			} catch (error) {
 				console.log(error)
 				setValues({
@@ -75,10 +74,13 @@ function Register() {
 		};
 
 		const handleFileUpload = (event) => {
-			console.log(event.target.files[0]);
+			setValues({
+      	...values,
+      	imgFile: event.target.files[0]
+  		});
 		};
 
-		const EmploymentStatusOptions = ["permanent full-time", "temporary full-time", "part-time"];
+	const EmploymentStatusOptions = ["permanent full-time", "temporary full-time", "part-time"];
 
 	return (
 		<>
