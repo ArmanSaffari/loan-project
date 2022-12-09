@@ -115,7 +115,7 @@ function LogIn() {
 							> Login <input hidden type="submit"/>
 						</Button>
 
-						<div style={{margin: '20px 0'}}>
+						<div style={{margin: '20px 0', color: "success"}}>
 								<Link to="/Register">Register</Link>
 						</div>
 

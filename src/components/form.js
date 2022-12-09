@@ -20,8 +20,8 @@ const TextInput = ({ name, control, label, rules, icon, size, type}) => {
 			control={control}
 			rules={rules}
 			render={({
-				field: { onChange, onBlur, value, name, ref },
-				fieldState: { isTouched, isDirty, error },
+				field: { onChange, onBlur, value, ref },
+				fieldState: { error, invalid },
 			}) => (
 				<TextField
 					type={type}
@@ -29,7 +29,8 @@ const TextInput = ({ name, control, label, rules, icon, size, type}) => {
 					onChange={onChange}
 					onBlur={onBlur}
 					inputRef={ref}
-					error={Boolean(error)}
+					error={invalid}
+					// helperText={error.message}
 					label={label}
 					color="success"
 					margin="dense"
@@ -52,7 +53,7 @@ const PasswordInput = ({name, control, label, rules, type, show, handleClickShow
 			rules={rules}
 			render={({
 				field: { onChange, onBlur, value, name, ref },
-				fieldState: { isTouched, isDirty, error },
+				fieldState: { invalid, error },
 			}) => (
 				<FormControl
 					fullWidth
@@ -67,7 +68,8 @@ const PasswordInput = ({name, control, label, rules, type, show, handleClickShow
 						onChange={onChange}
 						type={type}
 						value={value}
-						error={Boolean(error)}
+						error={invalid}
+						// helperText={error.message}
 						fullWidth
 						margin="dense"
 						color="success"
@@ -105,20 +107,21 @@ function SelectInput({ control, name, label, rules, options }) {
 			control={control}
 			render={({
 				field: { onChange, onBlur, value, name, ref },
-				fieldState: { isTouched, isDirty, error },
+				fieldState: { invalid, error },
 			}) => (
 				<FormControl
 				fullWidth
 				margin="dense"
 				size="small"
 				color="success"
-				error={Boolean(error)}
+				error={invalid}
+				// helperText={error.message}
 				variant="outlined"
 				control={control}>
 					<InputLabel htmlFor={`${name}-input`}
 						color="success"
 						size="small"
-						error={Boolean(error)}
+						error={invalid}
 						>{label}</InputLabel>
 					<Select
 						id={`${name}-input`}

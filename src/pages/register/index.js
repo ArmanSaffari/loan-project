@@ -22,7 +22,8 @@ function Register() {
 		reEnterPasswordShow: false,
 		alertText: "",
 		alertShow: false,
-		imgFile: null
+		imgFile: null,
+		imgPath: "person.png"
 });
 
 	const { handleSubmit, control, getValues } = useForm();
@@ -37,24 +38,24 @@ function Register() {
   		});
 	}
 
-    const handleMouseDownPassword = (event) => { 
-			event.preventDefault();
-    };
+  const handleMouseDownPassword = (event) => { 
+		event.preventDefault();
+  };
 
-    const registerHandler = async (event) => {
-			const registerData = event;
-			delete registerData.reEnterPassword;
-			try {
-				let formData = new FormData();
-				formData.append('userData', JSON.stringify(registerData));
-				formData.append('userPhoto', values.imgFile);
+  const registerHandler = async (event) => {
+		const registerData = event;
+		delete registerData.reEnterPassword;
+		try {
+			let formData = new FormData();
+			formData.append('userData', JSON.stringify(registerData));
+			formData.append('userPhoto', values.imgFile);
 
-				const requestOptions = {
-					method: 'POST',
-				//	headers: { 'Content-Type': 'multipart/form-data' },
-					body: formData
-				}
-				
+			const requestOptions = {
+				method: 'POST',
+			//	headers: { 'Content-Type': 'multipart/form-data' },
+				body: formData
+			}
+			
 			const response = await fetch('http://localhost:4000/api/user/registerWithPhoto', requestOptions)
 			const responseObj = await response.json();	
 			if (!response.ok) {throw responseObj.error}
@@ -76,7 +77,8 @@ function Register() {
 		const handleFileUpload = (event) => {
 			setValues({
       	...values,
-      	imgFile: event.target.files[0]
+      	imgFile: event.target.files[0],
+				imgPath: URL.createObjectURL(event.target.files[0])
   		});
 		};
 
@@ -114,7 +116,7 @@ function Register() {
 							control={control}
 							label="First Name"
 							size="small"
-							rules={{ required: true }}
+							rules={{ required: true}}
 							icon={<PersonIcon />}/>
 
 						<TextInput
@@ -222,7 +224,7 @@ function Register() {
 										border: '1px dashed grey',
 										}}>
 									<img
-									src={values.imgAddress}
+									src={values.imgPath}
 									alt="user"
 									width="100%"/>
 							</div>
@@ -235,7 +237,7 @@ function Register() {
 									color="success"
 									>Register
 									<input hidden type="submit"/>
-							</Button>
+							 </Button>
 							
 							<div style={{margin: '5px 0'}}>
 									<Link to="/">Login</Link>
