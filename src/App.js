@@ -3,7 +3,7 @@ import LogIn from "./pages/login";
 import Register from "./pages/register";
 import Dashboard from "./pages/dashboard";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { purple } from "@mui/material/colors";
+// import { purple } from "@mui/material/colors";
 import CssBaseline from "@mui/material/CssBaseline";
 
 function App() {
