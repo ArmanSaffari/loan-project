@@ -1,45 +1,9 @@
-import { useState,  useEffect} from "react";
-import { useLocation } from "react-router-dom";
-import { Alert, Collapse } from "@mui/material";
-
-const Dashboard = () => {
-
-  const [ values, setValues ] = useState({
-  alertText: "",
-  alertShow: false,
-  alertSeverity: "success"
-})
-
-  const location = useLocation();
-
-  useEffect(() => {
-    setValues({
-      ...values,
-      alertText: location.state.message,
-      alertShow: true
-    })
-  }, [location]);
- 
-  
-  
+const Home = () => {
   return (
     <>
-      <Collapse in={values.alertShow}> 
-        <Alert
-        severity={values.alertSeverity}
-        variant="filled"
-        onClose={() => {
-          setValues({
-            ...values,
-            alertText: "",
-            alertShow: false
-            })
-          }}
-        >{values.alertText}</Alert>
-      </Collapse>
-      <h3>Dashboard</h3>
+      <h3>Home</h3>
     </>
-  )
+  );
 };
 
-export default Dashboard;
+export default Home;

@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Grid, Alert, Collapse } from "@mui/material";
@@ -10,12 +10,12 @@ import { login } from "api/user";
 import { TextInput, PasswordInput } from "components/form";
 
 function LogIn() {
-  const [values, setValues] = React.useState({
+  const [values, setValues] = useState({
     username: {},
     password: {},
     showPassword: false,
     alertText: "",
-    alertshow: false,
+    alertShow: false,
   });
 
   const { handleSubmit, control } = useForm();
@@ -33,8 +33,17 @@ function LogIn() {
       const { data } = await login(event);
       localStorage.setItem("token", data.token);
       console.log(data);
-      navigate("/dashboard");
+      navigate("/dashboard", { state: { message: data.message } });
     } catch (error) {
+      const {
+        response: { data },
+      } = error;
+      console.log(data.error.message);
+      setValues({
+        ...values,
+        alertText: data.error.message,
+        alertShow: true,
+      });
       console.error(error);
     }
   };
@@ -89,15 +98,14 @@ function LogIn() {
             />
 
             <Button
-              variant="outlined"
-              component="label"
+              variant="contained"
               endIcon={<LoginIcon />}
               fullWidth
               sx={{ height: "56px", margin: "10px 0" }}
               color="success"
+              type="submit"
             >
-              {" "}
-              Login <input hidden type="submit" />
+              Login
             </Button>
 
             <div style={{ margin: "20px 0", color: "success" }}>

@@ -9,26 +9,28 @@ const routes = [
     path: "login",
     element: login,
     isPrivate: false,
+    childes: [],
   },
   {
     title: "register",
     path: "register",
     element: register,
     isPrivate: false,
+    childes: [],
   },
   {
     title: "home",
     path: "/",
     element: home,
     isPrivate: false,
-    childes: [
-      {
-        title: "dashboard",
-        path: "dashboard",
-        element: dashboard,
-        isPrivate: true,
-      },
-    ],
+    childes: [],
+  },
+  {
+    title: "dashboard",
+    path: "/dashboard",
+    element: home,
+    isPrivate: false,
+    childes: [],
   },
 ];
 
