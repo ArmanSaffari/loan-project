@@ -1,30 +1,31 @@
 import { useState,  useEffect} from "react";
 import { useLocation } from "react-router-dom";
 import { Alert, Collapse } from "@mui/material";
+import NavBar from "../../components/navbar";
 
 const Dashboard = () => {
 
-  const [ values, setValues ] = useState({
-  alertText: "",
-  alertShow: false,
-  alertSeverity: "success"
-})
+  // const [ values, setValues ] = useState({
+  // alertText: "",
+  // alertShow: false,
+  // alertSeverity: "success"
+  // })
 
-  const location = useLocation();
+  // const location = useLocation();
 
-  useEffect(() => {
-    setValues({
-      ...values,
-      alertText: location.state.message,
-      alertShow: true
-    })
-  }, [location]);
+  // useEffect(() => {
+  //   setValues({
+  //     ...values,
+  //     alertText: location.state.message,
+  //     alertShow: true
+  //   })
+  // }, [location]);
  
   
   
   return (
     <>
-      <Collapse in={values.alertShow}> 
+      {/* <Collapse in={values.alertShow}> 
         <Alert
         severity={values.alertSeverity}
         variant="filled"
@@ -36,7 +37,8 @@ const Dashboard = () => {
             })
           }}
         >{values.alertText}</Alert>
-      </Collapse>
+      </Collapse> */}
+      <NavBar />
       <h3>Dashboard</h3>
     </>
   )

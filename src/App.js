@@ -10,7 +10,7 @@ import routes from "routes/routes";
 function App() {
   const appTheme = createTheme({
     palette: {
-      mode: "dark",
+      mode: "light",
     },
   });
 

@@ -2,6 +2,7 @@ import login from "pages/login";
 import register from "pages/register";
 import home from "pages/home";
 import dashboard from "pages/dashboard";
+import membership from "pages/membership";
 
 const routes = [
   {
@@ -28,7 +29,14 @@ const routes = [
   {
     title: "dashboard",
     path: "/dashboard",
-    element: home,
+    element: dashboard,
+    isPrivate: false,
+    childes: [],
+  },
+  {
+    title: "membership",
+    path: "/membership",
+    element: membership,
     isPrivate: false,
     childes: [],
   },
