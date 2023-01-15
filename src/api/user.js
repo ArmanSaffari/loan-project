@@ -9,3 +9,7 @@ export const login = async (body) => {
 export const register = (body) => {
   return APIClient.post(`${endpoint}/register`, body);
 };
+
+export const getMySummary = (body) => {
+  return APIClient.get(`${endpoint}/summary`, body);
+};

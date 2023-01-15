@@ -3,6 +3,7 @@ import register from "pages/register";
 import home from "pages/home";
 import dashboard from "pages/dashboard";
 import membership from "pages/membership";
+import payments from "pages/payments";
 
 const routes = [
   {
@@ -40,6 +41,13 @@ const routes = [
     isPrivate: false,
     childes: [],
   },
+  {
+    title: "payments",
+    path: "/payments",
+    element: payments,
+    isPrivate: false,
+    childes: [],
+  }
 ];
 
 export default routes;

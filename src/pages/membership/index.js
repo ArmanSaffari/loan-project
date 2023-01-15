@@ -18,7 +18,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Grid, Item } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { ContactsOutlined } from "@mui/icons-material";
+import { ContactsOutlined, PropaneRounded } from "@mui/icons-material";
+// import DeleteBotton from "components/deletebotton";
 
 // const DeleteBotton = (props) => {
 
@@ -48,51 +49,6 @@ import { ContactsOutlined } from "@mui/icons-material";
 
 const Membership = () => {
 
-  const DeleteBotton = (props) => {
-
-    const handelDelete = async (event) => {
-      console.log(event.currentTarget.dataset.record);
-
-      try {
-        const body = { data: {
-          memFeeId: event.currentTarget.dataset.record
-        }};
-        // console.log("body: ", body)
-        const { data } = await deleteMemFee(body);
-        setAlert({
-          ...alert,
-          history: {
-            show: true,
-            severity: 'success',
-            text: data.message
-          }
-        })
-        console.log(data)
-      } catch (error) {
-        setAlert({
-          ...alert,
-          history: {
-            show: true,
-            severity: 'error',
-            text: error.message ? error.message : error.response.data.err.message
-          }
-        });
-      }
-    };
-  
-    return(
-      <Tooltip title="Delete row">
-        <IconButton aria-label="delete"
-          data-record={props.recordId}
-          size="small"
-          color="error"
-          variant="outlined"
-          onClick={handelDelete}>
-          <DeleteIcon />
-        </IconButton>
-      </Tooltip>
-    )
-  };
 
   const [values, setValues] = useState();
   const [lastMemFee, setLastMemFee] = useState();
@@ -108,16 +64,6 @@ const Membership = () => {
       text: ""
     }
   });
-  // const [increaseAlert, setIncreaseAlert] = useState({
-  //   show: false,
-  //   severity: 'error',
-  //   text: ""
-  // });
-  // const [historyAlert, setHistoryAlert] = useState({
-  //   show: false,
-  //   severity: 'error',
-  //   text: ""
-  // })
 
   useEffect(() => { 
     const fetchMemFeeList = async () => {
@@ -172,6 +118,52 @@ const Membership = () => {
     }
   };
 
+
+  const DeleteBotton = (props) => {
+
+    const handelDelete = async (event) => {
+      console.log(event.currentTarget.dataset.record);
+  
+      try {
+        const body = { data: {
+          recordId: event.currentTarget.dataset.record
+        }};
+        const { data } = await props.deleteHandler(body);
+        setAlert({
+          ...alert,
+          history: {
+            show: true,
+            severity: 'success',
+            text: data.message
+          }
+        })
+        console.log(data)
+      } catch (error) {
+        setAlert({
+          ...alert,
+          history: {
+            show: true,
+            severity: 'error',
+            text: error.message ? error.message : error.response.data.err.message
+          }
+        });
+      }
+    };
+  
+    return(
+      <Tooltip title="Delete row">
+        <IconButton aria-label="delete"
+          data-record={props.recordId}
+          size="small"
+          color="error"
+          variant="outlined"
+          onClick={handelDelete}>
+          <DeleteIcon />
+        </IconButton>
+      </Tooltip>
+    )
+  };
+  
   //colums and rows to be displayed in membership fee history table
   const columns = [
     { id: 'no', label: 'No.', minWidth: 20, align: 'center' },
@@ -189,7 +181,8 @@ const Membership = () => {
       confirmed: (row.confirmation) ?
         <Tooltip title="confirmed"><TaskAltIcon color='success'/></Tooltip> :
         <Tooltip title="waiting to be confirmed"><PendingIcon color='warning' /></Tooltip>,
-      deleteCol: (row.confirmation) ? "" : <DeleteBotton recordId={row.id}/>
+      deleteCol: (row.confirmation) ? "" :
+        <DeleteBotton recordId={row.id} deleteHandler={deleteMemFee}/>
     });
   });
     

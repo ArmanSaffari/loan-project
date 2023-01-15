@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import { fontWeight } from '@mui/system';
 
 export default function PlainTable(props) {
   const columns = props.columns;
@@ -29,13 +30,24 @@ export default function PlainTable(props) {
         <Table stickyHeader
           aria-label="sticky table"
           size="small">
-          <TableHead>
-            <TableRow>
+          <TableHead
+            sx={{
+              bgcolor: 'primary.main',
+              color: 'primary.main'
+            }}>
+            <TableRow sx={{
+              bgcolor: 'primary.main',
+              color: 'primary.main'
+            }}>
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
+                  sx={{
+                    bgcolor: 'primary.main',
+                    fontWeight: 'bold'
+                  }}
                 >
                   {column.label}
                 </TableCell>
