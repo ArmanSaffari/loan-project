@@ -82,7 +82,11 @@ function Register() {
   		});
 		};
 
-	const EmploymentStatusOptions = ["permanent full-time", "temporary full-time", "part-time"];
+	const EmploymentStatusOptions = [
+		{value: "permanent full-time", label: "permanent full-time"},
+		{value: "temporary full-time", label: "temporary full-time"},
+		{value: "part-time", label: "part-time"}
+	];
 
 	return (
 		<>

@@ -7,13 +7,14 @@ import { TextField,
 	FormControl,
 	Select,
 	MenuItem,
+	Stack,
 Autocomplete } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Controller, useController } from "react-hook-form";
 
 // form components:
-const TextInput = ({ name, control, label, rules, icon, size, type}) => {
+const TextInput = ({ name, control, label, rules, icon, size, type, defaultValue}) => {
 	return (
 		<Controller
 			name={name}
@@ -24,6 +25,7 @@ const TextInput = ({ name, control, label, rules, icon, size, type}) => {
 				fieldState: { error, invalid },
 			}) => (
 				<TextField
+					defaultValue={(defaultValue) ? defaultValue : ""}
 					type={type}
 					value={value}
 					onChange={onChange}
@@ -98,7 +100,7 @@ const PasswordInput = ({name, control, label, rules, type, show, handleClickShow
 
 function SelectInput({ control, name, label, rules, options }) {
 	const optionList = options.map((option) =>
-	<MenuItem value={option}>{option}</MenuItem>
+	<MenuItem value={option.value}>{option.label}</MenuItem>
 	);
   return (
 		<Controller
@@ -135,5 +137,23 @@ function SelectInput({ control, name, label, rules, options }) {
   );
 }
 
+function NativePickers() {
+  return (
+    // <Stack 
+		// component="form" noValidate spacing={3}>
+      <TextField
+        id="datetime-local"
+        label="Next appointment"
+        type="datetime-local"
+        defaultValue="2017-05-24T10:30"
+				fullWidth
+        sx={{ width: 250 }}
+        InputLabelProps={{
+          shrink: true,
+        }}
+      />
+    // </Stack>
+  );
+}
 
 export { TextInput, PasswordInput, SelectInput }

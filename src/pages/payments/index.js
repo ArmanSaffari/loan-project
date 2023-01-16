@@ -8,8 +8,9 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { getMyPayments } from "api/payments";
+import { getMyPayments, addPayment } from "api/payments";
 import { getMySummary } from "api/user";
+import { getAccountList } from "api/account";
 import PlainTable from "components/table";
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import PendingIcon from '@mui/icons-material/Pending';
@@ -20,48 +21,115 @@ import { Grid, Item } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { ContactsOutlined, Rowing } from "@mui/icons-material";
-
+import { TextInput, SelectInput } from "components/form";
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import NumbersIcon from '@mui/icons-material/Numbers';
 
 const Payments = () => {
 
   // define states:
   const [values, setValues] = useState();
   const [userSummary, setUserSummary] = useState();
+  const [accounts, setAccounts] = useState([])
   const [alert, setAlert] = useState({
     add: {
-      show: false,
-      severity: 'error',
-      text: ""
+      show: false, severity: 'error', text: ""
+    },
+    waiting: {
+      show: false, severity: 'info', text: ""
     },
     history: {
-      show: false,
-      severity: 'error',
-      text: ""
+      show: false, severity: 'info', text: ""
     }
   });
 
+  const currentDate = new Date();
+
   // send initial get request for the page:
   useEffect(() => { 
-  //   const fetchMyPayments = async () => {
-  //     const { data } = await getMyPayments();
-  //     if (data.success == true) setValues(data.value);
-  //   };
+    const fetchMyPayments = async () => {
+      const { data } = await getMyPayments();
+      if (data.success == true) setValues(data.value);
+    };
 
     const fetchMySummary = async () => {
       const { data } = await getMySummary();
       if (data.success == true) setUserSummary(data.value);
     };
 
-    // fetchMyPayments();
+    const fetchAccountList = async () => {
+      const { data } = await getAccountList();
+      if (data.success == true) setAccounts(data.value);
+    };
+
+    fetchMyPayments();
     fetchMySummary();
+    fetchAccountList();
 
   },[alert]);
 
   // requirements for increase mem
-  const { handleSubmit, register,  formState: { errors } } = useForm();
+  const { handleSubmit, register, control,  formState: { errors } } = useForm();
 
+  const handleAddPayment = async (event) => {
+    try {
+      const { data } = await addPayment(event);
+      setAlert({
+        ...alert,
+        add: {
+          show: true,
+          severity: 'success',
+          text: data.message + " (the payment needs to be confirmed!)"
+        }
+      });
+    } catch (err) {
+      setAlert({
+        ...alert,
+        add: {
+          show: true,
+          severity: 'error',
+          text: err ? err : "Something went wrong!"
+        }
+      })
+    }
+  };
 
-  // define delete button for history table
+  const WaitingPayment = () => {
+
+    // define rows and columns
+    return(
+      <>
+        <Grid container sx={{border: "1px solid gray"}}>
+
+          <Grid item xs={12} mt={2} mx={2}>
+            <Collapse in={alert.waiting.show}> 
+              <Alert
+              severity={alert.waiting.severity}
+              variant="filled"
+              onClose={() => {
+                setAlert({
+                  ...alert,
+                  waiting: {
+                    ...alert.waiting,
+                    show: false }
+                });
+              }}
+              >{alert.waiting.text}</Alert>
+            </Collapse> 
+          </Grid>
+
+          <Grid item xs={12} mt={2} mx={2}>
+            <Typography mb={2}>
+              List of requested monthly membership:
+            </Typography>
+            {/* <PlainTable columns={columns} rows={rows}/> */}
+          </Grid>
+
+        </Grid>
+      </>
+    )
+  }
+   // define delete button for history table
   // const DeleteBotton = (props) => {
     
   //   const handelDelete = async (event) => {
@@ -128,6 +196,11 @@ const Payments = () => {
   //   });
   // });
 
+
+  // define rows and columns for payments waiting for confirmation
+
+  // define rows and colums for all confirmed payments
+
   return (
     <>
       <NavBar />
@@ -153,17 +226,21 @@ const Payments = () => {
           </AccordionSummary>
           <AccordionDetails>
             <Typography>
-              Membership Fee: 
-              ${Math.max(0, userSummary.memFeeRemained)}
+              Due membership Fees need to be paide:
+              <strong style={{color: 'crimson'}}>
+                ${(userSummary) ? Math.max(0, userSummary.memFeeRemained) : "..."}
+              </strong>
             </Typography>
             <Typography>
-              Remained Installments:
-              ${Math.max(0, userSummary.installmentRemained)}
+              Due installments need to be paid: 
+              <strong style={{color: 'crimson'}}>
+                ${(userSummary) ? Math.max(0, userSummary.installmentRemained) : "..."}
+              </strong>
             </Typography>
           </AccordionDetails>
         </Accordion>
 
-        {/* <Accordion>
+        <Accordion>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel2a-content"
@@ -176,93 +253,101 @@ const Payments = () => {
             <Typography sx={{fontWeight: 'bold'}}>Add Payment</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Grid container my={2} sx={{border: "1px solid gray"}}>
-              <Grid item xs={12} mt={2} mx={2}>
-                <Collapse in={alert.increase.show}> 
+            <Grid container>
+              <Grid item xs={12} mx={2}>
+                <Collapse in={alert.add.show}> 
                   <Alert
-                  severity={alert.increase.severity}
+                  severity={alert.add.severity}
                   variant="filled"
                   onClose={() => {
                     setAlert({
                       ...alert,
-                      increase: {
-                        text: "",
-                        show: false,
-                        severity: 'error'
+                      add: {
+                        ...alert.add,
+                        show: false
                       }
                     });
                   }}
-                  >{alert.increase.text}</Alert>
+                  >{alert.add.text}</Alert>
                 </Collapse> 
               </Grid>
-            <form onSubmit={handleSubmit()}>
-              <Grid item xs={12} m={2}>
-                  <Typography sx={{ display: 'inline' }}>
-                    I hereby request to increase my monthly membership fee to 
-                  </Typography>
-                  <TextField
-                    id="standard-number"
-                    name="monthlyMembershipFee"
+
+              <form onSubmit={ handleSubmit(handleAddPayment) } style={{ width: "100%" }}> 
+                <Grid item container xs={12}>
+
+                  <Grid item xs={12} sm={6} md={4} lg={3} px={2} pt={2}>
+                    <TextInput
+                    type="datetime-local"
+                    defaultValue={currentDate.toISOString().slice(0,16)}
+                    name="paymentDate"
+                    control={control}
+                    label="Payment Date"
+                    size="small"
+                    rules={{ required: true }}
+                    />
+                  </Grid>
+                  
+                  <Grid item xs={12} sm={6} md={4} lg={3} px={2} pt={2}>
+                    <TextInput
+                    name="amount"
+                    control={control}
+                    label="Amount"
+                    size="small"
                     type="number"
-                    size="small"
-                    {...register('monthlyMembershipFee', {required: "enter amount!"})}
-                    helperText={errors.monthlyMembershipFee ? errors.monthlyMembershipFee.message : null}
-                    error={errors.monthlyMembershipFee ? true : false}
-                    inputProps={{
-                      style: {
-                        textAlign: 'center',
-                        width: '80px',
-                        fontWeight: 'bold',
-                        color: 'green'
-                      }
-                    }}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    variant="standard"
+                    rules={{ required: true, min: 0 }}
+                    icon={<AttachMoneyIcon />}
                     />
-                  <Typography sx={{ display: 'inline' }}>
-                    effective from
-                  </Typography>
-                  <TextField
-                    variant="standard"
-                    id="date"
-                    name="effectiveFrom"
-                    type="date"
-                    size="small"
-                    defaultValue={new Date().toISOString().split('T')[0]}
-                    {...register('effectiveFrom', {required: "enter date!"})}
-                    helperText={errors.effectiveFrom ? errors.effectiveFrom.message : null}
-                    error={errors.effectiveFrom ? true : false}
-                    inputProps={{
-                      style: {
-                        textAlign: 'center',
-                        width: '140px',
-                        fontWeight: 'bold',
-                        color: 'green'
-                      }
-                    }}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
+                  </Grid>
+
+                  <Grid item xs={12} sm={6} md={4} lg={3}  px={2} pt={2}>
+                    <SelectInput
+                      control={control}
+                      name="AccountId"
+                      label="Account"
+                      options={accounts}
+                      rules={{ required: true }}
                     />
-              </Grid>
-              <Grid item xs={12} m={2} justify="flex-end">
-                <Button
-                    variant="contained"
+                  </Grid>
+                  
+                  <Grid item xs={12} sm={6} md={4} lg={3}  px={2} pt={2}>
+                    <TextInput
+                    name="referenceNo"
+                    control={control}
+                    label="Reference No."
                     size="small"
-                    type="submit"
-                    endIcon={<ArrowForwardIosOutlinedIcon />}>
-                    Submit
-                </Button>
-              </Grid>
+                    rules={{ required: true }}
+                    icon={<NumbersIcon />}
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} px={2} pt={2}>
+                    <TextInput
+                    name="comment"
+                    control={control}
+                    label="Comment"
+                    size="small"
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} px={2} pt={2}>
+                    <Button
+                        variant="contained"
+                        size="small"
+                        type="submit"
+                        endIcon={<ArrowForwardIosOutlinedIcon />}
+                        style={{minWidth: '150px'}}>
+                        Submit
+                    </Button>
+                  </Grid>
+
+                </Grid>
               </form>
             </Grid>
             
           </AccordionDetails>
-        </Accordion> */}
+        </Accordion>
         
-        {/* <Accordion>
+        <Accordion>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel3a-content"
@@ -272,94 +357,12 @@ const Payments = () => {
               borderBottom: '1px solid gray'
             }}
           >
-            <Typography sx={{fontWeight: 'bold'}}>Paymnent Waiting To Be Confirmed!</Typography>
+            <Typography sx={{fontWeight: 'bold'}}>Paymnent Waiting To Be Confirmed</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Grid container my={2} sx={{border: "1px solid gray"}}>
-              <Grid item xs={12} mt={2} mx={2}>
-                <Collapse in={alert.increase.show}> 
-                  <Alert
-                  severity={alert.increase.severity}
-                  variant="filled"
-                  onClose={() => {
-                    setAlert({
-                      ...alert,
-                      increase: {
-                        text: "",
-                        show: false,
-                        severity: 'error'
-                      }
-                    });
-                  }}
-                  >{alert.increase.text}</Alert>
-                </Collapse> 
-              </Grid>
-            <form onSubmit={handleSubmit()}>
-              <Grid item xs={12} m={2}>
-                  <Typography sx={{ display: 'inline' }}>
-                    I hereby request to increase my monthly membership fee to 
-                  </Typography>
-                  <TextField
-                    id="standard-number"
-                    name="monthlyMembershipFee"
-                    type="number"
-                    size="small"
-                    {...register('monthlyMembershipFee', {required: "enter amount!"})}
-                    helperText={errors.monthlyMembershipFee ? errors.monthlyMembershipFee.message : null}
-                    error={errors.monthlyMembershipFee ? true : false}
-                    inputProps={{
-                      style: {
-                        textAlign: 'center',
-                        width: '80px',
-                        fontWeight: 'bold',
-                        color: 'green'
-                      }
-                    }}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    variant="standard"
-                    />
-                  <Typography sx={{ display: 'inline' }}>
-                    effective from
-                  </Typography>
-                  <TextField
-                    variant="standard"
-                    id="date"
-                    name="effectiveFrom"
-                    type="date"
-                    size="small"
-                    defaultValue={new Date().toISOString().split('T')[0]}
-                    {...register('effectiveFrom', {required: "enter date!"})}
-                    helperText={errors.effectiveFrom ? errors.effectiveFrom.message : null}
-                    error={errors.effectiveFrom ? true : false}
-                    inputProps={{
-                      style: {
-                        textAlign: 'center',
-                        width: '140px',
-                        fontWeight: 'bold',
-                        color: 'green'
-                      }
-                    }}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    />
-              </Grid>
-              <Grid item xs={12} m={2} justify="flex-end">
-                <Button
-                    variant="contained"
-                    size="small"
-                    type="submit"
-                    endIcon={<ArrowForwardIosOutlinedIcon />}>
-                    Submit
-                </Button>
-              </Grid>
-              </form>
-            </Grid>
-            
+            <WaitingPayment />
           </AccordionDetails>
-        </Accordion> */}
+        </Accordion>
 
         {/* <Accordion>
           <AccordionSummary

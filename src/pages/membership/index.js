@@ -95,7 +95,6 @@ const Membership = () => {
       } else if (values && event.effectiveFrom < values[0].effectiveFrom) {
         throw dateError
       }
-      console.log("event: ", event)
       const { data } = await setMemFee(event);
       setAlert({
         ...alert,
@@ -188,19 +187,6 @@ const Membership = () => {
     
   return (
     <>
-      {/* <Collapse in={values.alertShow}> 
-        <Alert
-        severity={values.alertSeverity}
-        variant="filled"
-        onClose={() => {
-          setValues({
-            ...values,
-            alertText: "",
-            alertShow: false
-            })
-          }}
-        >{values.alertText}</Alert>
-      </Collapse> */}
       <NavBar />
       <Container maxWidth="xl">
         <Typography
