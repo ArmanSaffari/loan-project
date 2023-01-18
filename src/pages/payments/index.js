@@ -1,6 +1,5 @@
 import { useState,  useEffect} from "react";
-import { set, useForm } from "react-hook-form";
-import { useLocation } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { Container, Alert, Collapse, Button } from "@mui/material";
 import NavBar from "../../components/navbar";
 import Accordion from '@mui/material/Accordion';
@@ -8,38 +7,27 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { getMyPayments, addPayment } from "api/payments";
+import { getMyPayments, getPayments, addPayment } from "api/payments";
 import { getMySummary } from "api/user";
 import { getAccountList } from "api/account";
-import PlainTable from "components/table";
-import TaskAltIcon from '@mui/icons-material/TaskAlt';
-import PendingIcon from '@mui/icons-material/Pending';
-import TextField from '@mui/material/TextField';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { Grid, Item } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import { ContactsOutlined, Rowing } from "@mui/icons-material";
 import { TextInput, SelectInput } from "components/form";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import NumbersIcon from '@mui/icons-material/Numbers';
+import PaymentHistory from "./paymentHistory";
+import WaitingPayment from "./WaitingPayment";
 
 const Payments = () => {
 
   // define states:
   const [values, setValues] = useState();
   const [userSummary, setUserSummary] = useState();
-  const [accounts, setAccounts] = useState([])
+  const [waitingPayments, setWaitingPayments] = useState();
+  const [accounts, setAccounts] = useState([]);
   const [alert, setAlert] = useState({
     add: {
       show: false, severity: 'error', text: ""
-    },
-    waiting: {
-      show: false, severity: 'info', text: ""
-    },
-    history: {
-      show: false, severity: 'info', text: ""
     }
   });
 
@@ -47,10 +35,6 @@ const Payments = () => {
 
   // send initial get request for the page:
   useEffect(() => { 
-    const fetchMyPayments = async () => {
-      const { data } = await getMyPayments();
-      if (data.success == true) setValues(data.value);
-    };
 
     const fetchMySummary = async () => {
       const { data } = await getMySummary();
@@ -61,14 +45,12 @@ const Payments = () => {
       const { data } = await getAccountList();
       if (data.success == true) setAccounts(data.value);
     };
-
-    fetchMyPayments();
+    
     fetchMySummary();
     fetchAccountList();
 
-  },[alert]);
+  },[]);
 
-  // requirements for increase mem
   const { handleSubmit, register, control,  formState: { errors } } = useForm();
 
   const handleAddPayment = async (event) => {
@@ -93,113 +75,6 @@ const Payments = () => {
       })
     }
   };
-
-  const WaitingPayment = () => {
-
-    // define rows and columns
-    return(
-      <>
-        <Grid container sx={{border: "1px solid gray"}}>
-
-          <Grid item xs={12} mt={2} mx={2}>
-            <Collapse in={alert.waiting.show}> 
-              <Alert
-              severity={alert.waiting.severity}
-              variant="filled"
-              onClose={() => {
-                setAlert({
-                  ...alert,
-                  waiting: {
-                    ...alert.waiting,
-                    show: false }
-                });
-              }}
-              >{alert.waiting.text}</Alert>
-            </Collapse> 
-          </Grid>
-
-          <Grid item xs={12} mt={2} mx={2}>
-            <Typography mb={2}>
-              List of requested monthly membership:
-            </Typography>
-            {/* <PlainTable columns={columns} rows={rows}/> */}
-          </Grid>
-
-        </Grid>
-      </>
-    )
-  }
-   // define delete button for history table
-  // const DeleteBotton = (props) => {
-    
-  //   const handelDelete = async (event) => {
-  //     console.log(event.currentTarget.dataset.record);
-
-  //     try {
-  //       const body = { data: {
-  //         memFeeId: event.currentTarget.dataset.record
-  //       }};
-  //       // console.log("body: ", body)
-  //       const { data } = await deleteMemFee(body);
-  //       setAlert({
-  //         ...alert,
-  //         history: {
-  //           show: true,
-  //           severity: 'success',
-  //           text: data.message
-  //         }
-  //       })
-  //       console.log(data)
-  //     } catch (error) {
-  //       setAlert({
-  //         ...alert,
-  //         history: {
-  //           show: true,
-  //           severity: 'error',
-  //           text: error.message ? error.message : error.response.data.err.message
-  //         }
-  //       });
-  //     }
-  //   };
-  //   return(
-  //     <Tooltip title="Delete row">
-  //       <IconButton aria-label="delete"
-  //         data-record={props.recordId}
-  //         size="small"
-  //         color="error"
-  //         variant="outlined"
-  //         onClick={handelDelete}>
-  //         <DeleteIcon />
-  //       </IconButton>
-  //     </Tooltip>
-  //   )
-  // };
-
-  //colums and rows to be displayed in membership fee history table
-  // const columns = [
-  //   { id: 'no', label: 'No.', minWidth: 20, align: 'center' },
-  //   { id: 'amount', label: 'Amount($)', minWidth: 60, align: 'center' },
-  //   { id: 'effectiveFrom', label: 'Effective From', minWidth: 100, align: 'center' },
-  //   { id: 'confirmed', label: 'Confirmed', minWidth: 60, align: 'center' },
-  //   { id: 'deleteCol', label: '', minWidth: 50, align: 'center' }
-  // ];
-
-  // const rows = (!values) ? [] : values.map((row, index) => {
-  //   return({
-  //     no: index + 1,
-  //     amount: row.monthlyMembershipFee,
-  //     effectiveFrom: row.effectiveFrom,
-  //     confirmed: (row.confirmation) ?
-  //       <Tooltip title="confirmed"><TaskAltIcon color='success'/></Tooltip> :
-  //       <Tooltip title="waiting to be confirmed"><PendingIcon color='warning' /></Tooltip>,
-  //     deleteCol: (row.confirmation) ? "" : <DeleteBotton recordId={row.id}/>
-  //   });
-  // });
-
-
-  // define rows and columns for payments waiting for confirmation
-
-  // define rows and colums for all confirmed payments
 
   return (
     <>
@@ -347,65 +222,10 @@ const Payments = () => {
           </AccordionDetails>
         </Accordion>
         
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel3a-content"
-            id="panel3a-header"
-            sx={{
-              backgroundColor: 'gray',
-              borderBottom: '1px solid gray'
-            }}
-          >
-            <Typography sx={{fontWeight: 'bold'}}>Paymnent Waiting To Be Confirmed</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <WaitingPayment />
-          </AccordionDetails>
-        </Accordion>
+        <WaitingPayment />
 
-        {/* <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel4a-content"
-            id="panel4a-header"
-            sx={{
-              backgroundColor: 'gray',
-              borderBottom: '1px solid gray'
-            }}
-          >
-            <Typography sx={{fontWeight: 'bold'}}>History Of All Payments</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Grid container>
-              <Grid item xs={12} mt={2} mx={2}>
-                <Collapse in={alert.history.show}> 
-                  <Alert
-                  severity={alert.history.severity}
-                  variant="filled"
-                  onClose={() => {
-                    setAlert({
-                      ...alert,
-                      history: {
-                        text: "",
-                        show: false,
-                        severity: 'error'
-                      }
-                    });
-                  }}
-                  >{alert.history.text}</Alert>
-                </Collapse> 
-              </Grid>
-              <Grid item xs={12} mt={2} mx={2}>
-                <Typography mb={2}>
-                  List of requested monthly membership:
-                </Typography>
-                <PlainTable columns={columns} rows={rows}/>
-              </Grid>
-            </Grid>
-          </AccordionDetails>
-        </Accordion> */}
-
+        <PaymentHistory />
+        
       </Container>
     </>
   )

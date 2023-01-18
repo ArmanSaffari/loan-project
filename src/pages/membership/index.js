@@ -73,7 +73,6 @@ const Membership = () => {
 
     const fetchLastMemFee = async () => {
       const { data } = await getMemFee();
-      console.log(data)
       if (data.success == true) setLastMemFee(data);
       };
     
