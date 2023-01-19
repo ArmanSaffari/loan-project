@@ -65,22 +65,21 @@ const Membership = () => {
     }
   });
 
-  useEffect(() => { 
-    const fetchMemFeeList = async () => {
-      const { data } = await getMemFeeList();
-      if (data.success == true) setValues(data.value);
-      };
+  const fetchMemFeeList = async () => {
+    const { data } = await getMemFeeList();
+    if (data.success == true) setValues(data.value);
+  };
 
-    const fetchLastMemFee = async () => {
-      const { data } = await getMemFee();
-      if (data.success == true) setLastMemFee(data);
-      };
-    
+  const fetchLastMemFee = async () => {
+    const { data } = await getMemFee();
+    if (data.success == true) setLastMemFee(data);
+  };
+
+  useEffect(() => { 
     fetchLastMemFee();
     fetchMemFeeList();
-    
   },[alert]);
-
+ 
   const { handleSubmit, register,  formState: { errors } } = useForm();
 
   const handleIncreaseMemFee = async (event) => {

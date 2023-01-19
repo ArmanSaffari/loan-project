@@ -15,5 +15,5 @@ export const getPayments = async (params) => {
 };
 
 export const deletePayment = async (body) => {
-  return await APIClient.get(`${endpoint}`, body)
+  return await APIClient.delete(`${endpoint}`, body)
 };
