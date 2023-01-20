@@ -1,6 +1,4 @@
-import * as React from 'react';
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react'
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,6 +12,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
+import Link from '@mui/material/Link';
 
 const pages = [
   {title: 'Membership', path:"/membership"},
@@ -21,32 +20,25 @@ const pages = [
   {title: 'Loans', path:"/loans"},
   {title: 'Guarantees', path:"/guarantees"}
 ];
+
 const settings = ['Account', 'Dashboard', 'Logout'];
 
-
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-
-  // const navigate = useNavigate();
-
-  // const [navValues , setNavValues] = useState({
-  //   next: ""
-  // });
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+  const handleCloseNavMenu = (event) => {
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const handleCloseUserMenu = (event) => {
   };
 
   return (
@@ -102,8 +94,13 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.title} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page.title}</Typography>
+                <MenuItem
+                  key={page.title} 
+                  onClick={handleCloseNavMenu}
+                >
+                  <Link href={page.path} underline="none">
+                    <Typography textAlign="center"> {page.title}</Typography>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
@@ -132,9 +129,7 @@ function ResponsiveAppBar() {
               <Button
                 key={page.title}
                 href={page.path}
-                // onClick={}//{() => {setNavValues({
-                //   // ...navValues,
-                //   // next: page.path})}}
+                onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page.title}

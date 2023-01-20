@@ -1,7 +1,6 @@
 import { useState,  useEffect} from "react";
 import { useForm } from "react-hook-form";
-import { Container, Alert, Collapse, Button } from "@mui/material";
-import NavBar from "../../components/navbar";
+import { Alert, Collapse, Button } from "@mui/material";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -60,13 +59,13 @@ const AddPaymentForm = () => {
             id="panel2a-header"
             sx={{
               backgroundColor: 'gray',
-              borderBottom: '1px solid gray'
+              borderBottom: '1px solid grey'
             }}
           >
             <Typography sx={{fontWeight: 'bold'}}>Add Payment</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Grid container>
+            <Grid container sx={{border: "1px solid gray"}}>
               <Grid item xs={12} mx={2}>
                 <Collapse in={alert.show}> 
                   <Alert
@@ -139,7 +138,7 @@ const AddPaymentForm = () => {
                     />
                   </Grid>
 
-                  <Grid item xs={12} px={2} pt={2}>
+                  <Grid item xs={12} px={2} py={2}>
                     <Button
                         variant="contained"
                         size="small"

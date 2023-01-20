@@ -8,30 +8,29 @@ const DeleteRowBotton = (props) => {
       1. recordId --> the id of the record related to the button
       2. deleteHandler --> a function to call the delete API
       3. alarmHandler --> a function to set alarm on parent component
+      4. updateHandler --> update table after one row is deleted
   */
   const handelDelete = async (event) => {
-    console.log(event.currentTarget.dataset.record);
-
     try {
       const body = { data: {
         recordId: event.currentTarget.dataset.record
       }};
 
-      // console.log("body: ", body)
       const { data } = await props.deleteHandler(body);
       props.alarmHandler({
         show: true,
         severity: 'success',
-        text: "success"//data.message
+        text: data.message
       });
-      // console.log(data)
       
+      props.updateHandler();
+
     } catch (error) {
 
       props.alarmHandler({
         show: true,
         severity: 'error',
-        text: "error"//error.message ? error.message : error.response.data.err.message
+        text: error.message ? error.message : error.response.data.err.message
       });
 
     }

@@ -1,12 +1,11 @@
 import { Container } from "@mui/material";
 import NavBar from "../../components/navbar";
 import Typography from '@mui/material/Typography';
-import PaymentHistory from "./paymentHistory";
-import WaitingPayment from "./waitingPayment";
-import AddPaymentForm from "./addPaymentForm";
-import DuePayemnts from "./duePayments";
+import LoanSummary from "./loanSummary";
+import LoanRequest from "./loanRequest";
+import LoanHistory from "./loanHistory";
 
-const Payments = () => {
+const Loans = () => {
 
   return (
     <>
@@ -16,21 +15,19 @@ const Payments = () => {
           component="h3"
           my={3}
           sx={{fontWeight: 'bold'}}>
-          Payments
+          Loans
         </Typography>
+       
+       <LoanSummary />
 
-        <DuePayemnts />
+       <LoanRequest />
+       
+       <LoanHistory />
 
-        <AddPaymentForm />
-
-        <WaitingPayment />
-
-        <PaymentHistory />
-        
       </Container>
     </>
   )
   
 };
 
-export default Payments;
+export default Loans;

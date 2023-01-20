@@ -4,6 +4,8 @@ import home from "pages/home";
 import dashboard from "pages/dashboard";
 import membership from "pages/membership";
 import payments from "pages/payments";
+import loans from "pages/loans";
+import guarantees from "pages/guarantees";
 
 const routes = [
   {
@@ -45,6 +47,20 @@ const routes = [
     title: "payments",
     path: "/payments",
     element: payments,
+    isPrivate: false,
+    childes: [],
+  },
+  {
+    title: "loans",
+    path: "/loans",
+    element: loans,
+    isPrivate: false,
+    childes: [],
+  },
+  {
+    title: "guarantees",
+    path: "/guarantees",
+    element: guarantees,
     isPrivate: false,
     childes: [],
   }

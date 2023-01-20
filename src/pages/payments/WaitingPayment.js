@@ -45,7 +45,6 @@ const WaitingPayment2 = (props) => {
   }
 
   const fetchPayments = async () => {
-    console.log("fetchPayment called!")
     const { data } = await getPayments({
       params: {
         filter: JSON.stringify( { confirmation: false } ),
@@ -74,6 +73,7 @@ const WaitingPayment2 = (props) => {
             <DeleteRowBotton
               recordId={row.id}
               deleteHandler={deletePayment}
+              updateHandler={fetchPayments}
               alarmHandler={handleAlarm}
             />
         });
