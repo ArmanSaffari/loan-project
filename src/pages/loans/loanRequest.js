@@ -5,7 +5,15 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Grid, Box, Collapse, Alert, Stepper, Button, Paper, Step, StepLabel, StepContent } from "@mui/material";
-import { getEligibility } from "api/loan";
+import { getEligibility, requestLoan } from "api/loan";
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import { TextInput } from "components/form";
+import LoanRequestForm from "./loanRequestForm";
+import DeclareGuarantorForm from "./declareGuarantorForm";
 
 const LoanRequest = () => {
 
@@ -15,26 +23,59 @@ const LoanRequest = () => {
   });
   const [evaluation, setEvaluation] = useState();
 
+
+  const handleSendRequest= async (event) => {
+    try {
+      const { data } = await requestLoan(event);
+      // console.log(event)
+      if (!data) {
+        setAlert({
+          show: true,
+          severity: 'danger',
+          text: "something went wrong!"
+        });
+      } else if (data.success) {
+        setAlert({
+          show: true,
+          severity: 'success',
+          text: data.message 
+        });
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      } else {
+        setAlert({
+          show: true,
+          severity: 'success',
+          text: (data.err.message) ? data.err.message : "something went wrong!"
+        });
+      }
+      
+    } catch (err) {
+      setAlert({
+        show: true,
+        severity: 'error',
+        text: err.message ? err.message : "Something went wrong!"
+      });
+    }
+  };
   const steps = [
     {
       label: 'Check Eligibility For New Loan',
       description: `If based on your payments and membership date, you are eligible for either normal or urgent loan, you can proceed to next step.`,
     },
     {
-      label: 'Create an ad group',
-      description:
-        'An ad group contains one or more ads which target a shared set of keywords.',
+      label: 'Request for a loan',
+      description: <LoanRequestForm 
+        evaluation={evaluation}
+        submitHandler={handleSendRequest}/>,
     },
     {
-      label: 'Create an ad',
-      description: `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`,
+      label: 'Declare Your Gurantors',
+      description: <DeclareGuarantorForm />
     },
   ];
 
   const fetchEligibility = async () => {
+    const error = { message: "something went wrong!" }
     try{
       const { data } = await getEligibility();
       if (data.success == true) {
@@ -44,22 +85,22 @@ const LoanRequest = () => {
             show: true, severity: 'warning', text: data.evaluation.message
           });
         } else {
+          setAlert({
+            ...alert, show: false, text: ""
+          });
           setActiveStep((prevActiveStep) => prevActiveStep + 1);
         }
+      } else {
+        throw error
       }
     } catch(error) {
       setAlert({
-        show: true, severity: 'error', text: "something went wrong!"
+        show: true, severity: 'error', text: error.message
       });
     }
   };
 
-  // const handleOpenAccardion = () => {
-  //   fetchEligibility();
-  // };
-
   const handleNext = () => {
-    // console.log(activeStep)
     switch (activeStep) {
       case 0:
         fetchEligibility();
@@ -134,17 +175,17 @@ const LoanRequest = () => {
                       <Button
                         variant="contained"
                         onClick={handleNext}
-                        sx={{ mt: 1, mr: 1 }}
+                        sx={{ mt: 1, mr: 1, display: (index == 1) ? "none" : "block" }}
                       >
                         {index === steps.length - 1 ? 'Finish' : 'Continue'}
                       </Button>
-                      <Button
+                      {/* <Button
                         disabled={index === 0}
                         onClick={handleBack}
                         sx={{ mt: 1, mr: 1 }}
                       >
                         Back
-                      </Button>
+                      </Button> */}
                     </div>
                   </Box>
                 </StepContent>
