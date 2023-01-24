@@ -122,6 +122,7 @@ const WaitingPayment2 = (props) => {
           </AccordionSummary>
           <AccordionDetails>
             <Grid container>
+              
               <Grid item xs={12} mt={2} mx={2}>
                 <Collapse in={alert.show}> 
                   <Alert
@@ -135,6 +136,7 @@ const WaitingPayment2 = (props) => {
                   >{alert.text}</Alert>
                 </Collapse> 
               </Grid>
+
               <Grid item xs={12} mx={2}>
                 <Typography>
                   {`Total number of ${pagination.total} payment(s) waiting to be confirmed by admin!`}

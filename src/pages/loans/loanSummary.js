@@ -91,7 +91,7 @@ const summaryHandler = () => {
                                   minWidth: "15px",
                                   border: "1pt solid grey",
                                   borderRadius: '4px',
-                                  width: `${parseInt(row[1][loanType])*10}%`
+                                  width: `${parseInt(row[1][loanType])*50/parseInt(numberOfLoans[0][1][loanType])}%`
                                   }}>
                                 <Typography textAlign={"center"} sx={{ fontSize: 14}}>
                                   { row[1][loanType] }

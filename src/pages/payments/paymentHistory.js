@@ -32,7 +32,7 @@ const PaymentHistory = (props) => {
   ];
 
   const fetchPayments = async () => {
-    console.log("fetchPayment called!")
+
     const { data } = await getPayments({
       params: {
         filter: JSON.stringify( { confirmation: true } ),

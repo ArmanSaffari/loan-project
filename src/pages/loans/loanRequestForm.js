@@ -40,7 +40,7 @@ const LoanRequestForm = (props) => {
     return (
       <>
       <Grid mb={1}>
-        <Alert icon={false} severity="success" variant="filled" >
+        <Alert icon={false} severity="success" >
           You are eligible for the following Loans
         </Alert>
       </Grid>
@@ -81,7 +81,7 @@ const LoanRequestForm = (props) => {
                             color: (!loan.eligibility) ? "text.disabled" :
                               ((error) ? "error.main" : "text.primary" )
                           }}>
-                          {`${loan.type} Loan (maximum amount: ${loan.amount}${(loan.amount) ? "$" : ""})`}
+                          {`${loan.type} Loan (maximum amount: ${loan.amount.toLocaleString("en-US")}${(loan.amount) ? "$" : ""})`}
                         </Typography>}
                       disabled={!loan.eligibility} />
                     )}

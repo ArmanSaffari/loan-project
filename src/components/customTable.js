@@ -88,7 +88,7 @@ export default function CustomTable(props) {
         
         
         <IconButton
-        disabled={(props.pagination.start == 1) ? true : false}
+        disabled={(props.pagination.start <= 1) ? true : false}
         onClick={props.handlePreviousPage}>
           <NavigateBeforeIcon />
         </IconButton>

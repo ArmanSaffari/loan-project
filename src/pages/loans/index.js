@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import LoanSummary from "./loanSummary";
 import LoanRequest from "./loanRequest";
 import LoanHistory from "./loanHistory";
+import WaitingLoanRequests from "./waitingLoanRequests";
 
 const Loans = () => {
 
@@ -18,11 +19,13 @@ const Loans = () => {
           Loans
         </Typography>
        
-       <LoanSummary />
+        <LoanSummary />
 
-       <LoanRequest />
-       
-       <LoanHistory />
+        <LoanRequest />
+
+        <WaitingLoanRequests />
+        
+        <LoanHistory />
 
       </Container>
     </>

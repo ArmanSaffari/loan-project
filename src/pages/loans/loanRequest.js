@@ -13,7 +13,8 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { TextInput } from "components/form";
 import LoanRequestForm from "./loanRequestForm";
-import DeclareGuarantorForm from "./declareGuarantorForm";
+import AddGuarantorForm from "./addGuarantorForm";
+import { addGuarantor, guarantorListByLoanId } from "api/guarantor";
 
 const LoanRequest = () => {
 
@@ -22,12 +23,19 @@ const LoanRequest = () => {
     show: false, severity: 'error', text: ""
   });
   const [evaluation, setEvaluation] = useState();
+  const [newLoanId, setNewLoanId] = useState(11);
+  const [guarantorRows, setGuarantorRows] = useState([]);
 
+  const fetchGuarantorList = async (loanId) => {
+    const { data } = await guarantorListByLoanId({
+      params: { loanId: loanId }
+    });
+    setGuarantorRows( data.foundRecords );
+  };
 
-  const handleSendRequest= async (event) => {
+  const handleSendRequest = async (event) => {
     try {
       const { data } = await requestLoan(event);
-      // console.log(event)
       if (!data) {
         setAlert({
           show: true,
@@ -40,6 +48,7 @@ const LoanRequest = () => {
           severity: 'success',
           text: data.message 
         });
+        setNewLoanId(data.newLoan.loanId);
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
       } else {
         setAlert({
@@ -53,26 +62,53 @@ const LoanRequest = () => {
       setAlert({
         show: true,
         severity: 'error',
-        text: err.message ? err.message : "Something went wrong!"
+        text: err ? err.response.data.err.message : "Something went wrong!"
       });
     }
   };
-  const steps = [
-    {
-      label: 'Check Eligibility For New Loan',
-      description: `If based on your payments and membership date, you are eligible for either normal or urgent loan, you can proceed to next step.`,
-    },
-    {
-      label: 'Request for a loan',
-      description: <LoanRequestForm 
-        evaluation={evaluation}
-        submitHandler={handleSendRequest}/>,
-    },
-    {
-      label: 'Declare Your Gurantors',
-      description: <DeclareGuarantorForm />
-    },
-  ];
+  
+  const handleAddGuarantor = async (event) => {
+    try {
+      setAlert({
+        ...alert, show: false, text: ""
+      });
+      const body = {
+        loanId: newLoanId,
+        ...event
+      }
+      const { data } = await addGuarantor(body);
+      fetchGuarantorList(newLoanId)
+      setAlert({
+        show: true,
+        severity: (data.success) ? 'success' : 'warning',
+        text: data.message
+      });
+    } catch (err) {
+      setAlert({
+        show: true,
+        severity: 'error',
+        text: err ? err.response.data.err.message : "Something went wrong!"
+      });
+    }
+  };
+
+  const handleFinish = async () => {
+    setAlert({
+      show: true,
+      severity: "success",
+      text: "Your request has successfuly completed!"
+    });
+    setActiveStep( activeStep + 1);
+  };
+
+  const handleAddLater = () => {
+    setAlert({
+      show: true,
+      severity: "warning",
+      text: "Your request has been recorded. It will not proceed unless you specify enough guarantors!"
+    });
+    setActiveStep( activeStep + 1);
+  };
 
   const fetchEligibility = async () => {
     const error = { message: "something went wrong!" }
@@ -100,29 +136,64 @@ const LoanRequest = () => {
     }
   };
 
-  const handleNext = () => {
-    switch (activeStep) {
-      case 0:
-        fetchEligibility();
-        break;
-      case 1:
-        console.log("step2");
-        break;
-      case 2:
-        console.log("step2");
-        break;
-      default:
-        // 
-    }
+  const handleEligibility = () => {
+    fetchEligibility();
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
+  const handleStartOver = () => {
     setActiveStep(0);
   };
+
+  const steps = [
+    {
+      label: 'Check Eligibility For New Loan',
+      description: <>
+        <Typography>
+          If based on your payments and membership date, you are eligible for either normal or urgent loan, you can proceed to next step.
+        </Typography>
+        <Button
+            variant="contained"
+            onClick={handleEligibility}
+            sx={{ mt: 1, mr: 1}}
+          >Continue
+          </Button>
+        </>
+    },
+    {
+      label: 'Request for a loan',
+      description: <LoanRequestForm 
+        evaluation={evaluation}
+        submitHandler={handleSendRequest}/>,
+    },
+    {
+      label: 'Add Your Gurantors',
+      description: <AddGuarantorForm
+        submitHandler={handleAddGuarantor}
+        loanId={newLoanId}
+        guarantorRows={guarantorRows}
+        finishHandler={handleFinish}
+        addLaterHandler={handleAddLater} />
+    },
+    {
+      label: "done!",
+      description: <>
+          <Typography>
+            pleaes follow up your request later in 'Waiting Loan Requests' tab below
+          </Typography>
+          <Button
+            variant="contained"
+            onClick={handleStartOver}
+            sx={{ mt: 1, mr: 1, display: "block" }}
+            > Start Another Request
+          </Button>
+        </>
+    }
+  ];
+
 
   return(
     <Accordion>
@@ -139,68 +210,50 @@ const LoanRequest = () => {
       </AccordionSummary>
 
       <AccordionDetails>
+        <Grid container spacing={1}>
+          <Grid item xs={12} mx={2}>
+            <Collapse in={alert.show}> 
+              <Alert
+              severity={alert.severity}
+              variant="filled"
+              onClose={() => {
+                setAlert({
+                  ...alert,
+                  show: false
+                });
+              }}
+              >{alert.text}</Alert>
+            </Collapse> 
+          </Grid>
 
-        <Grid item xs={12} mx={2}>
-          <Collapse in={alert.show}> 
-            <Alert
-            severity={alert.severity}
-            variant="filled"
-            onClose={() => {
-              setAlert({
-                ...alert,
-                show: false
-              });
-            }}
-            >{alert.text}</Alert>
-          </Collapse> 
+          <Grid item xs={12} md={6}>
+            <Box>
+              <Stepper activeStep={activeStep} orientation="vertical">
+                {steps.map((step, index) => (
+                  <Step key={step.label}>
+                    <StepLabel>
+                      {step.label}
+                    </StepLabel>
+                    <StepContent>
+                      <Typography>{step.description}</Typography>
+                      <Box sx={{ mb: 2 }}>
+                        <div>
+                          
+                          <Button
+                            sx={{mt: 1, mr: 1, display: (index === 1) ? "block" : "none"}}
+                            onClick={handleBack}>
+                            Back
+                          </Button>
+                        </div>
+                      </Box>
+                    </StepContent>
+                  </Step>
+                ))}
+              </Stepper>
+            </Box>
+
+          </Grid>
         </Grid>
-
-        <Box sx={{ maxWidth: 400 }}>
-          <Stepper activeStep={activeStep} orientation="vertical">
-            {steps.map((step, index) => (
-              <Step key={step.label}>
-                <StepLabel
-                  optional={
-                    index === 2 ? (
-                      <Typography variant="caption">Last step</Typography>
-                    ) : null
-                  }
-                >
-                  {step.label}
-                </StepLabel>
-                <StepContent>
-                  <Typography>{step.description}</Typography>
-                  <Box sx={{ mb: 2 }}>
-                    <div>
-                      <Button
-                        variant="contained"
-                        onClick={handleNext}
-                        sx={{ mt: 1, mr: 1, display: (index == 1) ? "none" : "block" }}
-                      >
-                        {index === steps.length - 1 ? 'Finish' : 'Continue'}
-                      </Button>
-                      {/* <Button
-                        disabled={index === 0}
-                        onClick={handleBack}
-                        sx={{ mt: 1, mr: 1 }}
-                      >
-                        Back
-                      </Button> */}
-                    </div>
-                  </Box>
-                </StepContent>
-              </Step>
-            ))}
-          </Stepper>
-          {activeStep === steps.length && (
-            <Paper square elevation={0} sx={{ p: 3 }}>
-              <Typography>All steps completed - you&apos;re finished</Typography>
-              <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-                Reset
-              </Button>
-            </Paper>
-          )}
-        </Box>
       </AccordionDetails>
     </Accordion>
   )

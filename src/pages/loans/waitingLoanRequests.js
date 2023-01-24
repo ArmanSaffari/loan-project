@@ -1,17 +1,15 @@
-import { useState,  useEffect} from "react";
+import { useState } from "react";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { getLoans } from "api/loan";
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import { Grid, Box, Divider } from "@mui/material";
+import { getLoans, deleteLoanRequest } from "api/loan";
+import { Grid, Collapse, Alert } from "@mui/material";
 import CustomTable from "components/customTable";
-
-const LoanHistory = () => {
-
+import DeleteRowBotton from "components/DeleteRowBotton";
+// import 
+const WaitingLoanRequests = () => {
   const [pagination, setPagination] = useState({
     total: 0,
     limit: 2,
@@ -20,22 +18,29 @@ const LoanHistory = () => {
     page: 1
   });
   const [rows, setRows] = useState([]);
+  const [alert, setAlert] = useState({
+    show: false, severity: 'error', text: ""
+  });
   
   // define rows and columns
   const columns = [
     { id: 'no', label: 'No.', minWidth: 20, align: 'center' },
     { id: 'id', label: 'ID', minWidth: 30, align: 'center' },
     { id: 'amount', label: 'Amount($)', minWidth: 60, align: 'center' },
-    { id: 'paymentDate', label: 'Payment Date', minWidth: 100, align: 'center' },
     { id: 'status', label: 'Status', minWidth: 80, align: 'center' },
-    { id: 'installments', label: 'Number of Installments', minWidth: 80, align: 'center' }
+    { id: 'installments', label: 'Number of Installments', minWidth: 80, align: 'center' },
+    { id: 'deleteCol', label: '', minWidth: 50, align: 'center' }
   ];
+
+  const handleAlarm = (alarm) => {
+    setAlert(alarm);
+  };
 
   const fetchLoans = async () => {
     
     const { data } = await getLoans({
       params: {
-        filter: JSON.stringify( {} ),
+        filter: JSON.stringify( { "loanStatus": "requested"} ),
         order: 'createdAt',
         limit: pagination.limit,
         page: pagination.page
@@ -56,9 +61,15 @@ const LoanHistory = () => {
           no: index + data.start,
           id: row.id,
           amount: row.loanAmount,
-          paymentDate: row.loanPaymentDate,
           status: row.loanStatus,
-          installments: row.installmentNo
+          installments: row.installmentNo,
+          deleteCol: 
+            <DeleteRowBotton
+              recordId={row.id}
+              deleteHandler={deleteLoanRequest}
+              updateHandler={fetchLoans}
+              alarmHandler={handleAlarm}
+            />
         });
       });
       setRows(rowValues);
@@ -101,11 +112,25 @@ const LoanHistory = () => {
         }}
         onClick={handleOpenAccordion}
       >
-        <Typography sx={{fontWeight: 'bold'}}>Loan History</Typography>
+        <Typography sx={{fontWeight: 'bold'}}>Waiting Loan Requests</Typography>
       </AccordionSummary>
 
       <AccordionDetails>
       <Grid container>
+
+        <Grid item xs={12} mt={2} mx={2}>
+          <Collapse in={alert.show}> 
+            <Alert
+            severity={alert.severity}
+            variant="filled"
+            onClose={() => {
+              setAlert({
+                ...alert, show: false, text: ""
+              });
+            }}
+            >{alert.text}</Alert>
+          </Collapse> 
+        </Grid>
 
         <Grid item xs={12} mt={2} mx={2}>
           <Typography>
@@ -129,4 +154,4 @@ const LoanHistory = () => {
   )
 };
 
-export default LoanHistory;
+export default WaitingLoanRequests;

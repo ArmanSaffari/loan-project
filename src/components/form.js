@@ -14,7 +14,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Controller, useController } from "react-hook-form";
 
 // form components:
-const TextInput = ({ name, control, label, rules, icon, size, type, defaultValue}) => {
+const TextInput = ({ name, control, label, rules, icon, size, type, defaultValue, sx}) => {
 	return (
 		<Controller
 			name={name}
@@ -33,6 +33,7 @@ const TextInput = ({ name, control, label, rules, icon, size, type, defaultValue
 					inputRef={ref}
 					error={invalid}
 					// helperText={error.message}
+					sx={(sx) ? sx : ""}
 					label={label}
 					color="success"
 					margin="dense"

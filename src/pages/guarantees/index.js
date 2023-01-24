@@ -1,6 +1,7 @@
 import { Container } from "@mui/material";
 import NavBar from "../../components/navbar";
-import Typography from '@mui/material/Typography';
+import Typography from "@mui/material/Typography";
+import GuranteeRequests from "./GuranteeRequests";
 
 const Guarantees = () => {
 
@@ -14,7 +15,9 @@ const Guarantees = () => {
           sx={{fontWeight: 'bold'}}>
           Guarantees
         </Typography>
-       
+      
+      <GuranteeRequests />
+      
       </Container>
     </>
   )
