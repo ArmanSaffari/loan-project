@@ -1,7 +1,8 @@
 import { Container } from "@mui/material";
 import NavBar from "../../components/navbar";
 import Typography from "@mui/material/Typography";
-import GuranteeRequests from "./GuranteeRequests";
+import GuaranteeRequests from "./GuaranteeRequests";
+import GuaranteeHistory from "./GuaranteeHistory";
 
 const Guarantees = () => {
 
@@ -16,8 +17,10 @@ const Guarantees = () => {
           Guarantees
         </Typography>
       
-      <GuranteeRequests />
+      <GuaranteeRequests />
       
+      <GuaranteeHistory />
+
       </Container>
     </>
   )

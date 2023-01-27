@@ -11,6 +11,11 @@ export const guarantorListByLoanId = async (params) => {
   return await APIClient.get(`${endpoint}/list`, params)
 };
 
+// all requests to current user for being a guarantor
 export const getGuarantorRequest = async (params) => {
   return await APIClient.get(`${endpoint}/guarantorRequest`, params)
 };
+
+export const confirmGuarantorship = async (body) => {
+  return await APIClient.put(`${endpoint}/guarantorConfirmation`, body)
+}

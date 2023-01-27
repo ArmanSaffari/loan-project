@@ -32,7 +32,6 @@ const TextInput = ({ name, control, label, rules, icon, size, type, defaultValue
 					onBlur={onBlur}
 					inputRef={ref}
 					error={invalid}
-					// helperText={error.message}
 					sx={(sx) ? sx : ""}
 					label={label}
 					color="success"
@@ -72,7 +71,6 @@ const PasswordInput = ({name, control, label, rules, type, show, handleClickShow
 						type={type}
 						value={value}
 						error={invalid}
-						// helperText={error.message}
 						fullWidth
 						margin="dense"
 						color="success"

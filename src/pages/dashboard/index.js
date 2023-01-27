@@ -2,42 +2,23 @@ import { useState,  useEffect} from "react";
 import { useLocation } from "react-router-dom";
 import { Alert, Collapse } from "@mui/material";
 import NavBar from "../../components/navbar";
+import { getMySummary } from "api/user";
 
 const Dashboard = () => {
 
-  // const [ values, setValues ] = useState({
-  // alertText: "",
-  // alertShow: false,
-  // alertSeverity: "success"
-  // })
+  const fetchMySummary = async () => {
+    const { data } = await getMySummary();
+    if (data.success == true) setUserSummary(data.value);
+  };
 
-  // const location = useLocation();
-
-  // useEffect(() => {
-  //   setValues({
-  //     ...values,
-  //     alertText: location.state.message,
-  //     alertShow: true
-  //   })
-  // }, [location]);
+  const summaryHandler = () => {
+    fetchMySummary();
+  };
  
   
   
   return (
     <>
-      {/* <Collapse in={values.alertShow}> 
-        <Alert
-        severity={values.alertSeverity}
-        variant="filled"
-        onClose={() => {
-          setValues({
-            ...values,
-            alertText: "",
-            alertShow: false
-            })
-          }}
-        >{values.alertText}</Alert>
-      </Collapse> */}
       <NavBar />
       <h3>Dashboard</h3>
     </>
