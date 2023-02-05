@@ -244,7 +244,7 @@ function Register() {
 							 </Button>
 							
 							<div style={{margin: '5px 0'}}>
-									<Link to="/">Login</Link>
+									<Link to="/login">Login</Link>
 							</div>
 
 							<div style={{margin: '5px 0'}}>

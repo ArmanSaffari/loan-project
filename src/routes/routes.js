@@ -6,6 +6,7 @@ import membership from "pages/membership";
 import payments from "pages/payments";
 import loans from "pages/loans";
 import guarantees from "pages/guarantees";
+import userInfo from "pages/userInfo";
 
 const routes = [
   {
@@ -61,6 +62,14 @@ const routes = [
     title: "guarantees",
     path: "/guarantees",
     element: guarantees,
+    isPrivate: false,
+    childes: [],
+  },
+  ,
+  {
+    title: "userInfo",
+    path: "/userInfo",
+    element: userInfo,
     isPrivate: false,
     childes: [],
   }

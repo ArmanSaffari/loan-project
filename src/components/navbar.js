@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,6 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import Link from '@mui/material/Link';
+import { getUserPhoto } from 'api/file';
 
 const pages = [
   {title: 'Membership', path:"/membership"},
@@ -21,14 +22,34 @@ const pages = [
   {title: 'Guarantees', path:"/guarantees"}
 ];
 
-const settings = ['Account', 'Dashboard', 'Logout'];
+const settings = [
+  {title: 'User Account', path:"/userInfo"},
+  {title: 'Dashboard', path:"/dashboard"},
+  {title: 'Logout', path:"/"}, , ];
 
 function ResponsiveAppBar() {
+
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [userPhoto, setUserPhoto] = useState(null);
+
+
+  useEffect( () => {
+    fetchUserPhoto()
+  }, []);
+
+  const fetchUserPhoto = async () => {
+    const { data } = await getUserPhoto({
+        params: {category: "userPhoto"},
+        responseType: 'blob'
+      });
+      const url = (data.size > 0) ? URL.createObjectURL(data) : null;
+      setUserPhoto(url);
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
+    console.log(event.currentTarget)
   };
 
   const handleOpenUserMenu = (event) => {
@@ -36,10 +57,13 @@ function ResponsiveAppBar() {
   };
 
   const handleCloseNavMenu = (event) => {
+    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = (event) => {
+    setAnchorElUser(null);
   };
+
 
   return (
     <AppBar position="static">
@@ -140,7 +164,7 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="User" src={userPhoto} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -160,8 +184,10 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key={setting.title} onClick={handleCloseUserMenu}>
+                  <Link href={setting.path} underline="none">
+                    <Typography textAlign="center">{setting.title}</Typography>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>

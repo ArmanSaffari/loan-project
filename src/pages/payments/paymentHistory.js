@@ -41,6 +41,7 @@ const PaymentHistory = (props) => {
         page: pagination.page
     }
     });
+    
     if (data.success == true) {
       setPagination({
         ...pagination,
