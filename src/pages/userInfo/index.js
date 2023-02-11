@@ -19,13 +19,16 @@ import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import { TextInput, SelectInput } from "components/form";
 import ChangeInfoForm from "./changeInfoForm";
-import { ContactSupportOutlined } from '@mui/icons-material';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import ChangePhotoDialog from './changePhotoDialog';
 
 const UserInfo = () => {
 
   const [userPhoto, setUserPhoto] = useState(null);
   const [myInfo, setMyInfo] = useState(null);
   const [editMode, setEditMode] = useState(null);
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(true);
+  const [image, setImage] = useState({ file: null, path: "" });
 
   useEffect( () => {
     fetchUserPhoto()
@@ -72,6 +75,22 @@ const UserInfo = () => {
     fetchMyInfo();
   };
 
+  const handleOpenConfimDialog = (event) => {
+    setImage({
+      file: event.target.files[0],
+			path: URL.createObjectURL(event.target.files[0])
+    })
+    setOpenConfirmDialog(true)
+  };
+
+  const handleCloseDialog = () => {
+    setOpenConfirmDialog(false)
+  };
+
+//  const dialogButtons = [
+//     {label: "button1", action: handlePhotoUpload},
+//   ];
+
   return (
     <>
       <NavBar />
@@ -104,14 +123,25 @@ const UserInfo = () => {
                     <Tooltip title="Change Photo">
                       <IconButton
                         sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                        aria-label={`info about`}
+                        aria-label="upload picture" component="label"
                       >
-                        <UploadIcon />
+                        <input hidden accept="image/*" type="file" name="userPhotoFile" onChange={handleOpenConfimDialog} />
+                          <PhotoCamera />
                       </IconButton>
                     </Tooltip>
                   }
                 />
                 </ImageListItem>
+                <ChangePhotoDialog 
+                  open={openConfirmDialog}
+                  handleClose={handleCloseDialog}
+                  image={image}
+                />
+                {/* <AlertDialogSlide
+                  title="asdad"
+                  content="sadasd"
+                  
+                  buttons={dialogButtons} /> */}
               </Grid>
         </Grid>
 

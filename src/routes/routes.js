@@ -72,6 +72,13 @@ const routes = [
     element: userInfo,
     isPrivate: false,
     childes: [],
+  },
+  {
+    title: "admin",
+    path: "/admin",
+    element: userInfo,
+    isPrivate: false,
+    childes: [],
   }
 ];
 

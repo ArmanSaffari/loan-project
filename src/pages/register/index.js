@@ -1,10 +1,14 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button,
     Grid,
     Alert,
     Collapse,
-    IconButton} from '@mui/material';
+    IconButton,
+		ThemeProvider,
+		Container,
+		Link,
+		Typography} from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { useForm } from "react-hook-form";
 import { TextInput, PasswordInput, SelectInput } from "../../components/form"
@@ -14,7 +18,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import SmartphoneIcon from '@mui/icons-material/Smartphone';
 import NumbersIcon from '@mui/icons-material/Numbers';
 import PersonIcon from '@mui/icons-material/Person';
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import { loginTheme } from 'components/theme';
 
 function Register() {
   const [values, setValues] = useState({
@@ -23,7 +27,7 @@ function Register() {
 		alertText: "",
 		alertShow: false,
 		imgFile: null,
-		imgPath: "person.png"
+		imgPath: "icons/personIcon-lightGray.svg"
 });
 
 	const { handleSubmit, control, getValues } = useForm();
@@ -90,36 +94,42 @@ function Register() {
 
 	return (
 		<>
-		<div>
-			<Grid container
-				spacing={4}
-				sx={{
-					display: 'flex',
-					justifyContent: 'center',
-						}}>
-				<Grid item xs={12} sm={10}>
-					<Collapse in={values.alertShow}> 
-						<Alert
-						severity="error"
-						variant="filled"
-						onClose={() => {
-							setValues({
-								...values,
-								alertText: "",
-								alertShow: false
-								})
-						}}
-						>{values.alertText}</Alert>
-					</Collapse>
-				</Grid>
+		<ThemeProvider theme={loginTheme}>
+			<Container
+				maxWidth="lg"
+				className="mainRegisterContainer"
+				>
 
-        <Grid item xs={10} sm={6} md={4} sx={{margin: '10px'}}>
+			<Grid container>
+
+        <Grid item xs={12} className='opaqueRegisterGrid'>
+					
+					<Grid item 
+					className="loginAlert"
+					xs={12}>
+						<Collapse in={values.alertShow}> 
+							<Alert
+							severity="error"
+							variant="filled"
+							onClose={() => {
+								setValues({
+									...values,
+									alertText: "",
+									alertShow: false
+									})
+							}}
+							>{values.alertText}</Alert>
+						</Collapse>
+					</Grid>
+
           <form onSubmit={handleSubmit(registerHandler)}>
+						<Typography>Register</Typography>
+						<h3 className="registerTitle">Personal Information</h3>      
+
 						<TextInput
 							name="firstName"
 							control={control}
 							label="First Name"
-							size="small"
 							rules={{ required: true}}
 							icon={<PersonIcon />}/>
 
@@ -127,7 +137,6 @@ function Register() {
 							name="lastName"
 							control={control}
 							label="Last Name"
-							size="small"
 							rules={{ required: true }}
 							icon={<PersonIcon />}/>
 
@@ -136,7 +145,7 @@ function Register() {
 							control={control}
 							type="number"
 							label="National Code"
-							size="small"
+							
 							rules={{ required: true }}
 							icon={<NumbersIcon />}/>
 
@@ -145,7 +154,6 @@ function Register() {
 							control={control}
 							type="number"
 							label="Personnel Code"
-							size="small"
 							rules={{ required: true }}
 							icon={<NumbersIcon />}/>
 
@@ -162,7 +170,7 @@ function Register() {
 							name="emailAddress"
 							control={control}
 							label="Email Address"
-							size="small"
+							
 							rules={{
 								required: true,
 								pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
@@ -173,7 +181,6 @@ function Register() {
 							name="password"
 							control={control}
 							label="Password"
-							size="small"
 							rules={{required: true}}
 							show={values.passwordShow}
 							type={values.passwordShow ? 'text' : 'password'}
@@ -183,7 +190,6 @@ function Register() {
 							name="reEnterPassword"
 							control={control}
 							label="Re Enter Password"
-							size="small"
 							rules={{required: true,
 								validate: {equalPasswords: value => value === getValues("password")}
 							}}
@@ -197,7 +203,6 @@ function Register() {
 							name="homeAddress"
 							control={control}
 							label="Home Address"
-							size="small"
 							rules={{ required: true }}
 							icon={<HomeIcon />}/>
 
@@ -205,7 +210,6 @@ function Register() {
 							name="phoneNumber"
 							control={control}
 							label="Phone Number"
-							size="small"
 							rules={{ required: true }}
 							icon={<SmartphoneIcon />}/>
 
@@ -213,14 +217,13 @@ function Register() {
 							name="zipCode"
 							control={control}
 							label="Zip Code"
-							size="small"
 							rules={{ required: true }}
 							icon={<MarkunreadMailboxIcon />}/>
 						
             <h3 className="registerTitle">Photo Upload
 							<span><IconButton color="dark" aria-label="upload picture" component="label">
 									<input hidden accept="image/*" type="file" name="userPhotoFile" onChange={handleFileUpload} />
-									<PhotoCamera />
+									<PhotoCamera color="success"/>
 							</IconButton></span></h3>        
 							{/* UserPicture */}
 							<div 
@@ -235,25 +238,24 @@ function Register() {
 								<Button
 									variant="outlined"
 									component="label"
-									endIcon={<AppRegistrationIcon  />}
 									fullWidth
-									sx={{	margin: '5px 0' }}
-									color="success"
 									>Register
 									<input hidden type="submit"/>
 							 </Button>
 							
 							<div style={{margin: '5px 0'}}>
-									<Link to="/login">Login</Link>
+									<Link href="/login">Login</Link>
 							</div>
 
 							<div style={{margin: '5px 0'}}>
-							<Link to="/forgetPassword">Forget Password</Link>
+							<Link href="/forgetPassword">Forget Password</Link>
 							</div>
             </form>    
           </Grid>
         </Grid>
-      </div>
+
+				</Container>
+			</ThemeProvider>
     </>
   )
 };

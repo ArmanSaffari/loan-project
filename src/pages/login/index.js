@@ -1,20 +1,22 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import { Button, Grid, Alert, Collapse } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Button, Grid, Alert, Collapse, Container } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-
 import { login } from "api/user";
-
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from "@mui/material/CssBaseline";
+import { Link } from '@mui/material';
 import { TextInput, PasswordInput } from "components/form";
+import { loginTheme } from "components/theme";
 
 function LogIn() {
   const [values, setValues] = useState({
     username: {},
     password: {},
     showPassword: false,
-    alertText: "",
+    alertText: "sdfsdf",
     alertShow: false,
   });
 
@@ -32,16 +34,18 @@ function LogIn() {
     try {
       const { data } = await login(event);
       localStorage.setItem("token", data.token);
-      console.log(data);
+      if (data.isAdmin) localStorage.setItem("isAdmin", true);
       navigate("/dashboard", { state: { message: data.message } });
     } catch (error) {
       const {
         response: { data },
       } = error;
-      console.log(data.error.message);
+      console.log(data);
+
+      console.log(data.err.message);
       setValues({
         ...values,
-        alertText: data.error.message,
+        alertText: data.err.message,
         alertShow: true,
       });
       console.error(error);
@@ -50,74 +54,95 @@ function LogIn() {
 
   return (
     <>
-      <Grid
-        container
-        spacing={0}
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          margin: "auto",
-        }}
-      >
-        <Grid item xs={12} sm={10}>
-          <Collapse in={values.alertShow}>
-            <Alert
-              severity="error"
-              variant="filled"
-              onClose={() => {
-                setValues({
-                  ...values,
-                  alertText: "",
-                  alertShow: false,
-                });
-              }}
-            >
-              {values.alertText}
-            </Alert>
-          </Collapse>
-        </Grid>
+    
+      <ThemeProvider theme={loginTheme}>
+        <Container
+          maxWidth="lg"
+          className="mainFormContainer"
+          >
+          <Grid container>
 
-        <Grid item xs={10} sm={6} md={4} lg={3} sx={{ margin: "10px" }}>
-          <form onSubmit={handleSubmit(logInHandler)}>
-            <TextInput
-              name="emailAddress"
-              control={control}
-              label="Email"
-              rules={{ required: true }}
-              icon={<AccountCircleIcon />}
-            />
+            <Grid item
+              xs={12}
+              className='gradientLoginGrid'>
 
-            <PasswordInput
-              name="password"
-              control={control}
-              label="password"
-              rules={{ required: true }}
-              show={values.showPassword}
-              type={values.showPassword ? "text" : "password"}
-              handleClickShowPassword={handleClickShowPassword}
-            />
+              <Grid item xs={12}
+                className="loginAlert">
+                  
+                <Collapse in={values.alertShow}>
+                  <Alert
+                    severity="error"
+                    variant="filled"
+                    onClose={() => {
+                      setValues({
+                        ...values,
+                        alertText: "",
+                        alertShow: false,
+                      });
+                    }}
+                  >
+                    {values.alertText}
+                  </Alert>
+                </Collapse>
+              </Grid>
 
-            <Button
-              variant="contained"
-              endIcon={<LoginIcon />}
-              fullWidth
-              sx={{ height: "56px", margin: "10px 0" }}
-              color="success"
-              type="submit"
-            >
-              Login
-            </Button>
+              <form onSubmit={handleSubmit(logInHandler)}>
 
-            <div style={{ margin: "20px 0", color: "success" }}>
-              <Link to="/Register">Register</Link>
-            </div>
+                <TextInput
+                  name="emailAddress"
+                  control={control}
+                  label="Email"
+                  rules={{ required: true }}
+                  icon={<AccountCircleIcon />}
+                />
+                
+                <PasswordInput
+                  name="password"
+                  control={control}
+                  label="password"
+                  rules={{ required: true }}
+                  show={values.showPassword}
+                  type={values.showPassword ? "text" : "password"}
+                  handleClickShowPassword={handleClickShowPassword}
+                />
 
-            <div style={{ margin: "20px 0" }}>
-              <Link to="/forgetPassword">Forget Password</Link>
-            </div>
-          </form>
-        </Grid>
-      </Grid>
+                <Button
+                  variant="outlined"
+                  // endIcon={<LoginIcon />}
+                  fullWidth
+                  // sx={{ height: "56px", margin: "10px 0" }}
+                  // color="success"
+                  type="submit"
+                >
+                  Login
+                </Button>
+
+                <div 
+                // className="links"
+                style={{ margin: "20px 0"}}
+                >
+                  <Link href="/Register">Register</Link>
+                </div>
+
+                <div 
+                style={{ margin: "20px 0" }}
+                >
+                  <Link href="/forgetPassword">Forget Password</Link>
+                </div>
+              </form>
+            </Grid>
+       
+            <Grid item 
+            className="loginLogoGrid"
+            xs={12}>
+              <img
+                alt="Kish Financial Institute Logo"
+                width="300px"
+                src="./logos/Kish Financial Institution-darkGray.svg"></img>
+            </Grid>
+          </Grid>
+        </Container>
+      </ThemeProvider>
     </>
   );
 }

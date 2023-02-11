@@ -6,15 +6,15 @@ import { TextField,
 	InputAdornment,
 	FormControl,
 	Select,
-	MenuItem,
-	Stack,
-Autocomplete } from '@mui/material';
+	MenuItem } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Controller, useController } from "react-hook-form";
+// import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 // form components:
 const TextInput = ({ name, control, label, rules, icon, size, type, defaultValue, sx}) => {
+	
 	return (
 		<Controller
 			name={name}
@@ -35,7 +35,7 @@ const TextInput = ({ name, control, label, rules, icon, size, type, defaultValue
 					sx={(sx) ? sx : ""}
 					label={label}
 					color="success"
-					margin="dense"
+					// margin="dense"
 					size={size}
 					fullWidth
 					InputProps={{
@@ -59,7 +59,7 @@ const PasswordInput = ({name, control, label, rules, type, show, handleClickShow
 			}) => (
 				<FormControl
 					fullWidth
-					margin="dense"
+					// margin="dense"
 					>
 					<InputLabel htmlFor={`${name}-input`}
 						color="success"

@@ -11,21 +11,26 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import { ThemeProvider } from '@mui/material/styles'
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import Link from '@mui/material/Link';
 import { getUserPhoto } from 'api/file';
+import { useNavigate } from "react-router-dom";
+import { navbarTheme } from "components/theme";
 
 const pages = [
-  {title: 'Membership', path:"/membership"},
-  {title: 'Payments', path:"/payments"},
-  {title: 'Loans', path:"/loans"},
-  {title: 'Guarantees', path:"/guarantees"}
+  {title: 'Membership', path: "/membership"},
+  {title: 'Payments', path: "/payments"},
+  {title: 'Loans', path: "/loans"},
+  {title: 'Guarantees', path: "/guarantees"}
 ];
 
 const settings = [
-  {title: 'User Account', path:"/userInfo"},
-  {title: 'Dashboard', path:"/dashboard"},
-  {title: 'Logout', path:"/"}, , ];
+  {title: 'User Account', path: "/userInfo"},
+  {title: 'Dashboard', path: "/dashboard"},
+  {title: 'Admin Page', path: "/admin"},
+  {title: 'Logout', path: "/"}
+];
 
 function ResponsiveAppBar() {
 
@@ -33,6 +38,7 @@ function ResponsiveAppBar() {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [userPhoto, setUserPhoto] = useState(null);
 
+  const navigate = useNavigate();
 
   useEffect( () => {
     fetchUserPhoto()
@@ -56,14 +62,19 @@ function ResponsiveAppBar() {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = (event) => {
+  const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = (event) => {
+  const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
+  const handleLogOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("isAdmin");
+    navigate("/");
+  };
 
   return (
     <AppBar position="static">
@@ -184,10 +195,18 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting.title} onClick={handleCloseUserMenu}>
-                  <Link href={setting.path} underline="none">
+                <MenuItem 
+                  key={setting.title}
+                  sx={{
+                    display: ((setting.path != "/admin") ) ?
+                    "block" : 
+                    ((localStorage.getItem("isAdmin")) ? "block" : "none" )
+                  }}
+                  >
+                  <Button
+                    onClick={ () => (setting.title == "Logout") ? handleLogOut() : navigate(setting.path) }>
                     <Typography textAlign="center">{setting.title}</Typography>
-                  </Link>
+                  </Button>
                 </MenuItem>
               ))}
             </Menu>
