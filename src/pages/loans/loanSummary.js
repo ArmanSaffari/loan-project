@@ -28,16 +28,16 @@ const summaryHandler = () => {
   fetchMySummary();
 };
   
-  const loanTypes =["normal", "urgent"];
-  const colors = {
-    total: "#34D8EB", requested: "#E8C4A9", canceled: "",
-    rejected: "#E6413E", active: "#60E79E", terminated: "gray"
-}
-  const LoanSummaryCard = (props) => {
+const loanTypes =["normal", "urgent"];
+const colors = {
+  total: "#34D8EB", requested: "#E8C4A9", canceled: "",
+  rejected: "#E6413E", active: "#60E79E", terminated: "gray"
+};
+  
+const LoanSummaryCard = (props) => {
 
-    return(
-      <Card  raised> 
-      {/* sx={{ width: 200 }} */}
+  return(
+    <Card  raised> 
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           Word of the Day asdadasadsdad
@@ -53,10 +53,6 @@ const summaryHandler = () => {
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
-        sx={{
-          backgroundColor: 'gray',
-          borderBottom: '1px solid gray'
-        }}
         onClick={summaryHandler}
       >
         <Typography sx={{fontWeight: 'bold'}}>Loan Summary</Typography>

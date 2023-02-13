@@ -8,7 +8,7 @@ import { getLoans, deleteLoanRequest } from "api/loan";
 import { Grid, Collapse, Alert } from "@mui/material";
 import CustomTable from "components/customTable";
 import DeleteRowBotton from "components/DeleteRowBotton";
-// import 
+
 const WaitingLoanRequests = () => {
   const [pagination, setPagination] = useState({
     total: 0,
@@ -106,10 +106,6 @@ const WaitingLoanRequests = () => {
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
-        sx={{
-          backgroundColor: 'gray',
-          borderBottom: '1px solid gray'
-        }}
         onClick={handleOpenAccordion}
       >
         <Typography sx={{fontWeight: 'bold'}}>Waiting Loan Requests</Typography>

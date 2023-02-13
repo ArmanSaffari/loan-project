@@ -201,10 +201,6 @@ const LoanRequest = () => {
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
-        sx={{
-          backgroundColor: 'gray',
-          borderBottom: '1px solid gray'
-        }}
       >
         <Typography sx={{fontWeight: 'bold'}}>Loan Request</Typography>
       </AccordionSummary>

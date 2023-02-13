@@ -24,10 +24,6 @@ const DuePayemnts = () => {
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
-        sx={{
-          backgroundColor: 'gray',
-          borderBottom: '1px solid gray'
-        }}
         onClick={summaryHandler}
       >
         <Typography sx={{fontWeight: 'bold'}}>Due Payments</Typography>
@@ -36,13 +32,13 @@ const DuePayemnts = () => {
         <Typography>
           {"Due membership Fees need to be paide: "}
           <strong style={{color: 'crimson'}}>
-            {(userSummary) ?`${Math.max(0, userSummary.memFeeRemained)}$` : "..."}
+            {(userSummary) ?`${Math.max(0, (userSummary.memFeeRemained).toFixed(2))}$` : "..."}
           </strong>
         </Typography>
         <Typography>
           {"Due installments need to be paid: "}
           <strong style={{color: 'crimson'}}>
-            {(userSummary) ? `${Math.max(0, userSummary.installmentRemained)}$` : "..."}
+            {(userSummary) ? `${Math.max(0, (userSummary.installmentRemained).toFixed(2))}$` : "..."}
           </strong>
         </Typography>
       </AccordionDetails>

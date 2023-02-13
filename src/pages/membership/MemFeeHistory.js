@@ -110,10 +110,6 @@ const MemFeeHistory = (props) => {
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel2a-content"
             id="panel2a-header"
-            sx={{
-              backgroundColor: 'gray',
-              borderBottom: '1px solid gray'
-            }}
           >
             <Typography sx={{fontWeight: 'bold'}}>Monthly Membership Fee History</Typography>
           </AccordionSummary>

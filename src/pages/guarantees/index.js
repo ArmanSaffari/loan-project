@@ -1,4 +1,7 @@
-import { Container } from "@mui/material";
+import { useState,  useEffect, useLayoutEffect} from "react";
+import { Container, ThemeProvider } from "@mui/material";
+import { dashboardTheme } from 'components/theme';
+
 import NavBar from "../../components/navbar";
 import Typography from "@mui/material/Typography";
 import GuaranteeRequests from "./GuaranteeRequests";
@@ -8,20 +11,25 @@ const Guarantees = () => {
 
   return (
     <>
-      <NavBar />
-      <Container maxWidth="xl">
-        <Typography
-          component="h3"
-          my={3}
-          sx={{fontWeight: 'bold'}}>
-          Guarantees
-        </Typography>
-      
-      <GuaranteeRequests />
-      
-      <GuaranteeHistory />
+      <ThemeProvider theme={dashboardTheme}>
 
-      </Container>
+        <Container maxWidth={false} className="dashboardContainer">
+          
+          <NavBar />
+          
+          <Container maxWidth="lg">
+
+          <h3 className="header">Guarantees</h3>
+                        
+          <GuaranteeRequests />
+          
+          <GuaranteeHistory />
+
+        </Container>
+
+        </Container>
+
+      </ThemeProvider>
     </>
   )
   

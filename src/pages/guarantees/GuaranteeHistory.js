@@ -120,10 +120,6 @@ const GuaranteeHistory = () => {
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
-        sx={{
-          backgroundColor: 'gray',
-          borderBottom: '1px solid gray'
-        }}
         onClick={handleOpenAccordion}
       >
         <Typography sx={{fontWeight: 'bold'}}>Gurantee History</Typography>

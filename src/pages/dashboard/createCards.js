@@ -8,44 +8,44 @@ const  createCards = (userSummary) => {
   const cards = [
     {
       imgSrc: "",
-      title: "Months of being a member:",
+      title: "Month(s) of membership",
       content: memMonths,
       path:"/membership" 
     },
     {
       imgSrc: "",
-      title: "Monthly Membership Fee:",
+      title: "Monthly Membership Fee",
       content: `$ ${userSummary.memFeeToBePaid.lastMemFee}`,
       path:"/payments" 
     },
     {
       imgSrc: "",
-      title: "Total paid membership so far:",
+      title: "Total paid membership so far",
       content: `$ ${userSummary.memFee.sum.toFixed(2)}`,
       path:"/payments" 
     },
     {
       imgSrc: "",
-      title: "Number of active Loans:",
+      title: "Number of active Loans",
       content: `${userSummary.numberOfLoans.active.normal +
         userSummary.numberOfLoans.active.urgent}`,
       path:"/payments" 
     },
     {
       imgSrc: "",
-      title: "Due membership fee payment:",
+      title: "Due membership fee payment",
       content: `$ ${userSummary.memFeeRemained.toFixed(2)}`,
       path:"/payments" 
     },
     {
       imgSrc: "",
-      title: "Due installments to be paid:",
+      title: "Due installments to be paid",
       content: `$ ${userSummary.installmentRemained.toFixed(2)}`,
       path:"/payments" 
     },
     {
       imgSrc: "",
-      title: "Monthly installments:",
+      title: "Monthly installments",
       content: `$ ${userSummary.installments.reduce(
         (accumulate, value) => parseFloat(accumulate) + parseFloat(value.installmentAmount),
         0).toFixed(2)}`,

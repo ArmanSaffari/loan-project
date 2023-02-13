@@ -1,6 +1,8 @@
-import { Container } from "@mui/material";
+import { useState,  useEffect, useLayoutEffect} from "react";
+import { Container, ThemeProvider } from "@mui/material";
+import { dashboardTheme } from 'components/theme';
+
 import NavBar from "../../components/navbar";
-import Typography from '@mui/material/Typography';
 import PaymentHistory from "./paymentHistory";
 import WaitingPayment from "./waitingPayment";
 import AddPaymentForm from "./addPaymentForm";
@@ -10,24 +12,29 @@ const Payments = () => {
 
   return (
     <>
-      <NavBar />
-      <Container maxWidth="xl">
-        <Typography
-          component="h3"
-          my={3}
-          sx={{fontWeight: 'bold'}}>
-          Payments
-        </Typography>
+      <ThemeProvider theme={dashboardTheme}>
 
-        <DuePayemnts />
+        <Container maxWidth={false} className="dashboardContainer">
 
-        <AddPaymentForm />
+          <NavBar />
 
-        <WaitingPayment />
+          <Container maxWidth="lg">
 
-        <PaymentHistory />
-        
-      </Container>
+            <h3 className="header">Payments</h3>
+
+            <DuePayemnts />
+
+            <AddPaymentForm />
+
+            <WaitingPayment />
+
+            <PaymentHistory />
+
+          </Container>
+
+        </Container>
+
+      </ThemeProvider>
     </>
   )
   

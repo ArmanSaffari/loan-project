@@ -1,9 +1,10 @@
 import { useState,  useEffect, useLayoutEffect} from "react";
-import { Container } from "@mui/material";
+import { Container, ThemeProvider, Grid } from "@mui/material";
 import NavBar from "../../components/navbar";
 import { getMySummary, tokenCheck } from "api/user";
 import DashboardCards from "./dashboradCards";
 import createCards from "./createCards";
+import { dashboardTheme } from 'components/theme';
 
 const Dashboard = () => {
   
@@ -24,15 +25,23 @@ const Dashboard = () => {
 
   return (
     <>
-      <NavBar />
-      <Container maxWidth="xl">
+      <ThemeProvider theme={dashboardTheme}>
+        
+        <Container maxWidth={false} className="dashboardContainer">
+          
+          <NavBar />
 
-        <h3>Dashboard</h3>
+            <Container maxWidth="lg" >
 
-        <DashboardCards cards={summaryCards}/>
-        <img ></img>
-      </Container>
-      
+              <h3 className="header">Dashboard</h3>
+
+              <DashboardCards cards={summaryCards}/>
+              
+          </Container>
+
+        </Container>
+
+      </ThemeProvider>
     </>
   )
 };

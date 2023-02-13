@@ -1,4 +1,7 @@
-import { Container } from "@mui/material";
+import { useState,  useEffect, useLayoutEffect} from "react";
+import { Container, ThemeProvider } from "@mui/material";
+import { dashboardTheme } from 'components/theme';
+
 import NavBar from "../../components/navbar";
 import Typography from '@mui/material/Typography';
 import LoanSummary from "./loanSummary";
@@ -10,24 +13,30 @@ const Loans = () => {
 
   return (
     <>
-      <NavBar />
-      <Container maxWidth="xl">
-        <Typography
-          component="h3"
-          my={3}
-          sx={{fontWeight: 'bold'}}>
-          Loans
-        </Typography>
-       
-        <LoanSummary />
+      <ThemeProvider theme={dashboardTheme}>
 
-        <LoanRequest />
+        <Container maxWidth={false} className="dashboardContainer">
 
-        <WaitingLoanRequests />
+          <NavBar />
+
+          <Container maxWidth="lg">
+
+          <h3 className="header">Loans</h3>
         
-        <LoanHistory />
+          <LoanSummary />
 
-      </Container>
+          <LoanRequest />
+
+          <WaitingLoanRequests />
+          
+          <LoanHistory />
+
+          </Container>
+
+        </Container>
+
+      </ThemeProvider>
+
     </>
   )
   

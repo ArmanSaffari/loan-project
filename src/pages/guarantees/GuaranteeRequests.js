@@ -5,14 +5,9 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { getGuarantorRequest } from "api/guarantor";
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import { Grid, Collapse, Alert } from "@mui/material";
 import CustomTable from "components/customTable";
-// import { SelectInput } from "components/form";
-import FilterField from "components/filterField";
 import GuaranteeConfirmation from "./GuaranteeConfirmation";
-import { SettingsApplicationsRounded } from "@mui/icons-material";
 
 const GuaranteeRequest = () => {
 
@@ -119,10 +114,6 @@ const GuaranteeRequest = () => {
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
-        sx={{
-          backgroundColor: 'gray',
-          borderBottom: '1px solid gray'
-        }}
         onClick={handleOpenAccordion}
       >
         <Typography sx={{fontWeight: 'bold'}}>Waiting Gurantee Request</Typography>

@@ -89,41 +89,37 @@ const PaymentHistory = (props) => {
 
   return (
     <>
-    <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel4a-content"
-            id="panel4a-header"
-            sx={{
-              backgroundColor: 'gray',
-              borderBottom: '1px solid gray'
-            }}
-            onClick={handleOpenAccordion}
-          >
-            <Typography sx={{fontWeight: 'bold'}}>History Of Payments</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Grid container>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel4a-content"
+          id="panel4a-header"
+          onClick={handleOpenAccordion}
+        >
+          <Typography sx={{fontWeight: 'bold'}}>History Of Payments</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Grid container>
 
-              <Grid item xs={12} mt={2} mx={2}>
-                <Typography>
-                  {`Total number of ${pagination.total} confirmed payments found!`}
-                </Typography>
-              </Grid>
-
-              <Grid item xs={12} mt={2} mx={2}>
-                <CustomTable 
-                  rows={rows}
-                  columns={columns}
-                  pagination={pagination}
-                  handleNextPage={handleNextPage}
-                  handlePreviousPage={handlePreviousPage}
-                  />
-
-              </Grid>
+            <Grid item xs={12} mt={2} mx={2}>
+              <Typography>
+                {`Total number of ${pagination.total} confirmed payments found!`}
+              </Typography>
             </Grid>
-          </AccordionDetails>
-        </Accordion>
+
+            <Grid item xs={12} mt={2} mx={2}>
+              <CustomTable 
+                rows={rows}
+                columns={columns}
+                pagination={pagination}
+                handleNextPage={handleNextPage}
+                handlePreviousPage={handlePreviousPage}
+                />
+
+            </Grid>
+          </Grid>
+        </AccordionDetails>
+      </Accordion>
     </>
   )
 };

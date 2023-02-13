@@ -9,14 +9,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
+import { Tooltip, Grid, Divider, Badge, ThemeProvider} from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
-import { ThemeProvider } from '@mui/material/styles'
-import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
-import Link from '@mui/material/Link';
 import { getUserPhoto } from 'api/file';
 import { useNavigate } from "react-router-dom";
 import { navbarTheme } from "components/theme";
+import { getMyInfo } from 'api/user';
+
 
 const pages = [
   {title: 'Membership', path: "/membership"},
@@ -37,11 +36,13 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [userPhoto, setUserPhoto] = useState(null);
+  const [myInfo, setMyInfo] = useState(null);
 
   const navigate = useNavigate();
 
   useEffect( () => {
-    fetchUserPhoto()
+    fetchUserPhoto();
+    fetchMyInfo();
   }, []);
 
   const fetchUserPhoto = async () => {
@@ -51,6 +52,13 @@ function ResponsiveAppBar() {
       });
       const url = (data.size > 0) ? URL.createObjectURL(data) : null;
       setUserPhoto(url);
+  };
+
+  const fetchMyInfo = async () => {
+    const { data } = await getMyInfo();
+    if (data.success == true) {
+      setMyInfo(data.value);
+    }
   };
 
   const handleOpenNavMenu = (event) => {
@@ -77,143 +85,163 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <RequestQuoteIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/dashboard"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            KNFI
-          </Typography>
+    <ThemeProvider theme={navbarTheme}>
+      <AppBar>
+        <Container maxWidth="lg" className='navbaContainer'>
+          <Toolbar disableGutters>
+            
+            {/* sandwich icon for menu */}
+            <Box sx={{ flexGrow: 0, display: { xs: 'flex', md: 'none' }}}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                className="navbarMenuButton"
+              >
+                <MenuIcon/>
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{
+                  display: { xs: 'block', md: 'none' },
+                }}
+              >
+                {pages.map((page) => (
+                  <MenuItem
+                    key={page.title}
+                    onClick={handleCloseNavMenu}
+                  >
+                    <Button className="navbarMenuItem"
+                      onClick={ () => navigate(page.path) }>{page.title}
+                    </Button>
+                  </MenuItem>
+                ))}
+              </Menu>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
+            </Box>
+
+            {/* Logo */}
+            <Box
+              sx={{display: 'flex',
+              flexGrow: {xs: 1, md: 0},
+              justifyContent: 'center',
+              alignItems: 'center'}}
+              onClick={() => navigate("/dashboard")}
+              >
+              <img 
+              className='navbarLogo'
+              src='logos/Kish Financial Institution-darkGray.svg' alt='KFI'
+              />
+            </Box>
+            
+            {/* Menu bar */}
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {pages.map((page) => (
-                <MenuItem
-                  key={page.title} 
+                <Button
+                className="navbarMenuButtons"
+                  key={page.title}
+                  href={page.path}
                   onClick={handleCloseNavMenu}
                 >
-                  <Link href={page.path} underline="none">
-                    <Typography textAlign="center"> {page.title}</Typography>
-                  </Link>
-                </MenuItem>
+                  {page.title}
+                </Button>
               ))}
-            </Menu>
-          </Box>
-          <RequestQuoteIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="/dashboard"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            KNFI
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page.title}
-                href={page.path}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page.title}
-              </Button>
-            ))}
-          </Box>
+            </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="User" src={userPhoto} />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem 
-                  key={setting.title}
-                  sx={{
-                    display: ((setting.path != "/admin") ) ?
-                    "block" : 
-                    ((localStorage.getItem("isAdmin")) ? "block" : "none" )
-                  }}
-                  >
-                  <Button
-                    onClick={ () => (setting.title == "Logout") ? handleLogOut() : navigate(setting.path) }>
-                    <Typography textAlign="center">{setting.title}</Typography>
-                  </Button>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+            <Box>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{border: '1pt solid red', p: 0 }}
+                className='avatarContainer'>
+
+                  <Badge
+                  badgeContent={4}
+                  color="secondary"
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}>
+                    <Avatar alt="User"
+                      src={userPhoto}
+                      className='avatar'/>
+                  </Badge>
+
+                </IconButton>
+              </Tooltip>
+              <Menu 
+                className="navbarMenu"
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {(myInfo) ? 
+                <Grid>
+
+                  <Typography component='div' className='userInfo'>
+                    {`${(myInfo).firstName} ${(myInfo).lastName}`}
+                  </Typography>
+
+                  <Typography component='div' className='userInfo'>
+                    {(myInfo).personnelCode}
+                  </Typography>
+
+                  <Typography component='div' className='userInfo'>
+                    {`${(myInfo.isActiveUser) ? 'active' : 'inactive' } member`}
+                  </Typography>
+
+                  <Divider variant="middle"/>
+                  
+                </Grid>
+                : ''}
+
+                {settings.map((setting) => (
+                  <MenuItem
+                  
+                    key={setting.title}
+                    sx={{
+                      display: ((setting.path != "/admin") ) ?
+                      "block" : 
+                      ((localStorage.getItem("isAdmin")) ? "block" : "none" )
+                    }}
+                    >
+                    <Button className="navbarMenuItem"
+                      onClick={ () => (setting.title == "Logout") ? handleLogOut() : navigate(setting.path) }>
+                      {setting.title}
+                    </Button>
+                  </MenuItem>
+                ))}
+              </Menu>
+              {/* </Grid> */}
+            </Box>
+            
+          </Toolbar>
+        </Container>
+      </AppBar>
+    </ThemeProvider>
   );
 }
 export default ResponsiveAppBar;

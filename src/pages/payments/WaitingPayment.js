@@ -107,55 +107,51 @@ const WaitingPayment2 = (props) => {
 
   return (
     <>
-    <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel4a-content"
-            id="panel4a-header"
-            sx={{
-              backgroundColor: 'gray',
-              borderBottom: '1px solid gray'
-            }}
-            onClick={handleOpenAccordion}
-          >
-            <Typography sx={{fontWeight: 'bold'}}>Waiting Payments</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Grid container>
-              
-              <Grid item xs={12} mt={2} mx={2}>
-                <Collapse in={alert.show}> 
-                  <Alert
-                  severity={alert.severity}
-                  variant="filled"
-                  onClose={() => {
-                    setAlert({
-                      ...alert, show: false, text: ""
-                    });
-                  }}
-                  >{alert.text}</Alert>
-                </Collapse> 
-              </Grid>
-
-              <Grid item xs={12} mx={2}>
-                <Typography>
-                  {`Total number of ${pagination.total} payment(s) waiting to be confirmed by admin!`}
-                </Typography>
-              </Grid>
-
-              <Grid item xs={12} mt={2} mx={2}>
-                <CustomTable 
-                  rows={rows}
-                  columns={columns}
-                  pagination={pagination}
-                  handleNextPage={handleNextPage}
-                  handlePreviousPage={handlePreviousPage}
-                  />
-
-              </Grid>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel4a-content"
+          id="panel4a-header"
+          onClick={handleOpenAccordion}
+        >
+          <Typography sx={{fontWeight: 'bold'}}>Waiting Payments</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Grid container>
+            
+            <Grid item xs={12} mt={2} mx={2}>
+              <Collapse in={alert.show}> 
+                <Alert
+                severity={alert.severity}
+                variant="filled"
+                onClose={() => {
+                  setAlert({
+                    ...alert, show: false, text: ""
+                  });
+                }}
+                >{alert.text}</Alert>
+              </Collapse> 
             </Grid>
-          </AccordionDetails>
-        </Accordion>
+
+            <Grid item xs={12} mx={2}>
+              <Typography>
+                {`Total number of ${pagination.total} payment(s) waiting to be confirmed by admin!`}
+              </Typography>
+            </Grid>
+
+            <Grid item xs={12} mt={2} mx={2}>
+              <CustomTable 
+                rows={rows}
+                columns={columns}
+                pagination={pagination}
+                handleNextPage={handleNextPage}
+                handlePreviousPage={handlePreviousPage}
+                />
+
+            </Grid>
+          </Grid>
+        </AccordionDetails>
+      </Accordion>
     </>
   )
 };

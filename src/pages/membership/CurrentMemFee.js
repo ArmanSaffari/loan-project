@@ -12,11 +12,8 @@ const CurrentMemFee = (props) => {
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
+        // className='accordionTitle'
         id="panel1a-header"
-        sx={{
-          backgroundColor: 'gray',
-          borderBottom: '1px solid gray'
-        }}
       >
         <Typography sx={{fontWeight: 'bold'}}>Current</Typography>
       </AccordionSummary>
