@@ -31,11 +31,11 @@ const Dashboard = () => {
           
           <NavBar />
 
-            <Container maxWidth="lg" >
+          <Container maxWidth="lg" >
 
-              <h3 className="header">Dashboard</h3>
+            <h3 className="header">Dashboard</h3>
 
-              <DashboardCards cards={summaryCards}/>
+            <DashboardCards cards={summaryCards}/>
               
           </Container>
 

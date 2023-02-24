@@ -93,107 +93,117 @@ const UserInfo = () => {
 
   return (
     <>
-      <NavBar />
-      <Container maxWidth="xl">
+      {/* <ThemeProvider theme={dashboardTheme}> */}
 
-      <Grid container mt={8}>
-        <Grid container item 
-          direction="row"
-          justifyContent="center"
-          sm={12} md={4} >
-            <Grid item m={2}>
-              <ImageListItem >
-                <img
-                  src={userPhoto || "person.png"}
-                  alt="User Photo"
-                  style={{maxWidth: "300px", objectFit: "contain"}}
-                />
-                <ImageListItemBar
-                  title={ (myInfo) ?
-                    <Typography sx={{fontWeight: "bold", fontSize: "1.2em"}}>
-                      {`${myInfo.firstName} ${myInfo.lastName}`}
-                    </Typography>
-                  : "" }
-                  subtitle={ (myInfo) ?  
-                    <Typography sx={{fontSize: "1.5em"}}>
-                        {myInfo.personnelCode}
-                      </Typography>
-                    : "" }
-                  actionIcon={
-                    <Tooltip title="Change Photo">
-                      <IconButton
-                        sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                        aria-label="upload picture" component="label"
-                      >
-                        <input hidden accept="image/*" type="file" name="userPhotoFile" onChange={handleOpenConfimDialog} />
-                          <PhotoCamera />
-                      </IconButton>
-                    </Tooltip>
-                  }
-                />
-                </ImageListItem>
-                <ChangePhotoDialog 
-                  open={openConfirmDialog}
-                  handleClose={handleCloseDialog}
-                  image={image}
-                />
-                {/* <AlertDialogSlide
-                  title="asdad"
-                  content="sadasd"
-                  
-                  buttons={dialogButtons} /> */}
-              </Grid>
-        </Grid>
+        <Container maxWidth={false}>
 
-        <Grid item sm={0} md={1} >
-          <Divider orientation="vertical" />
-        </Grid>
+          <NavBar />
 
-        <Grid item sm={12} md={7}>
-              {infoList.map( (info) => {
-                return (
-                  <Grid item m={5} >
-                    <Typography >
-                      {info.title}:
-                    </Typography>
+          <Container maxWidth="lg">
 
-                    <Grid item pl={2}
-                    sx={{ display: (editMode == info.id) ? "none" : "block"}}>
-                      <Grid container>
-                      <Typography  sx={{fontWeight: "bold", fontSize: "1.3em"}}>
-                        { (myInfo) ? myInfo[info.id] : ""}
-                      </Typography>
-
-                      <Tooltip title="edit">
-                        <IconButton sx={{display: "inline"}} type="submit">
-                          <EditIcon 
-                          onClick={handleEdit}
-                          color="primary" data-id={info.id}/>
-                        </IconButton>
-                      </Tooltip>
-                      </Grid>
-                    </Grid>
-
-                    <Grid item pl={2}
-                    sx={{display: (editMode == info.id) ? "block" : "none"}}>
-                      <Grid container>
-                        <ChangeInfoForm info={info} handlePostSubmision={handlePostSubmision}/>
-                        <Tooltip title="Cancel">
-                          <IconButton>
-                            <ClearIcon 
-                            onClick={hideEditForm}
-                            color="error"/>
+            <Grid container mt={8}>
+            <Grid container item 
+              direction="row"
+              justifyContent="center"
+              sm={12} md={4} >
+                <Grid item m={2}>
+                  <ImageListItem >
+                    <img
+                      src={userPhoto || "person.png"}
+                      alt="User Photo"
+                      style={{maxWidth: "300px", objectFit: "contain"}}
+                    />
+                    <ImageListItemBar
+                      title={ (myInfo) ?
+                        <Typography sx={{fontWeight: "bold", fontSize: "1.2em"}}>
+                          {`${myInfo.firstName} ${myInfo.lastName}`}
+                        </Typography>
+                      : "" }
+                      subtitle={ (myInfo) ?  
+                        <Typography sx={{fontSize: "1.5em"}}>
+                            {myInfo.personnelCode}
+                          </Typography>
+                        : "" }
+                      actionIcon={
+                        <Tooltip title="Change Photo">
+                          <IconButton
+                            sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                            aria-label="upload picture" component="label"
+                          >
+                            <input hidden accept="image/*" type="file" name="userPhotoFile" onChange={handleOpenConfimDialog} />
+                              <PhotoCamera />
                           </IconButton>
                         </Tooltip>
-                      </Grid>
-                    </Grid>
+                      }
+                    />
+                    </ImageListItem>
+                    <ChangePhotoDialog 
+                      open={openConfirmDialog}
+                      handleClose={handleCloseDialog}
+                      image={image}
+                    />
+                    {/* <AlertDialogSlide
+                      title="asdad"
+                      content="sadasd"
+                      
+                      buttons={dialogButtons} /> */}
                   </Grid>
-                )
-                })
-              } 
-          </Grid>
-        </Grid>
-      </Container>
+            </Grid>
+
+            <Grid item sm={0} md={1} >
+              <Divider orientation="vertical" />
+            </Grid>
+
+            <Grid item sm={12} md={7}>
+                  {infoList.map( (info) => {
+                    return (
+                      <Grid item m={5} >
+                        <Typography >
+                          {info.title}:
+                        </Typography>
+
+                        <Grid item pl={2}
+                        sx={{ display: (editMode == info.id) ? "none" : "block"}}>
+                          <Grid container>
+                          <Typography  sx={{fontWeight: "bold", fontSize: "1.3em"}}>
+                            { (myInfo) ? myInfo[info.id] : ""}
+                          </Typography>
+
+                          <Tooltip title="edit">
+                            <IconButton sx={{display: "inline"}} type="submit">
+                              <EditIcon 
+                              onClick={handleEdit}
+                              color="primary" data-id={info.id}/>
+                            </IconButton>
+                          </Tooltip>
+                          </Grid>
+                        </Grid>
+
+                        <Grid item pl={2}
+                        sx={{display: (editMode == info.id) ? "block" : "none"}}>
+                          <Grid container>
+                            <ChangeInfoForm info={info} handlePostSubmision={handlePostSubmision}/>
+                            <Tooltip title="Cancel">
+                              <IconButton>
+                                <ClearIcon 
+                                onClick={hideEditForm}
+                                color="error"/>
+                              </IconButton>
+                            </Tooltip>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    )
+                    })
+                  } 
+              </Grid>
+            </Grid>
+
+          </Container>
+
+        </Container>
+
+      {/* ?/ThemeProvider> */}
     </>
   )
 };
