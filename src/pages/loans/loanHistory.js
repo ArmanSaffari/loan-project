@@ -9,6 +9,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Grid, Box, Divider } from "@mui/material";
 import CustomTable from "components/customTable";
+import { showDate, showTime } from "components/utilityFunctions";
 
 const LoanHistory = () => {
 
@@ -56,7 +57,7 @@ const LoanHistory = () => {
           no: index + data.start,
           id: row.id,
           amount: row.loanAmount,
-          paymentDate: row.loanPaymentDate,
+          paymentDate: showDate(row.loanPaymentDate),
           status: row.loanStatus,
           installments: row.installmentNo
         });

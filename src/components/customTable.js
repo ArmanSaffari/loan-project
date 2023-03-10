@@ -12,24 +12,29 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import { customTableTheme } from 'components/theme';
 
 export default function CustomTable(props) {
+  /*
+  props must include: 
+  1. columns
+  2. rows
+  3. pagination which must include:
+      page, limit, start, end, total
+  4. handlePreviousPage
+  5. handleNextPage
+
+  optional:
+  1. handleRowSelect
+  */
   const columns = props.columns;
   const rows = props.rows;
-  // const [page, setPage] = React.useState(0);
   let page = props.pagination.page;
-  // const [rowsPerPage, setRowsPerPage] = React.useState(10);
   let rowsPerPage = props.pagination.limit;
 
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
-  // must be an inout from props
+  const handleRowSelect = (event) => {
+    if (props.handleRowSelect) {
+      props.handleRowSelect(event.currentTarget.dataset.id)
+    }
+  };
 
-  // const handleChangeRowsPerPage = (event) => {
-  //   setRowsPerPage(+event.target.value);
-  //   setPage(0);
-  // };
-
-  // must be an inout from props
   return (
     <ThemeProvider theme={customTableTheme}>
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -45,10 +50,7 @@ export default function CustomTable(props) {
                     align={column.align}
                     style={{ minWidth: column.minWidth }}
                     className='CustomTableHeader'
-                    // sx={{
-                    //   bgcolor: 'primary.main',
-                    //   fontWeight: 'bold'
-                    // }}
+                    sx={{ display: (column.hidden) ? 'none' : ''}}
                   >
                     {column.label}
                   </TableCell>
@@ -57,14 +59,23 @@ export default function CustomTable(props) {
             </TableHead>
             <TableBody>
               {rows
-                // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.no}>
+                    <TableRow hover 
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={row.no}
+                      data-id={row.id}
+                      onClick={ handleRowSelect }
+                      >
                       {columns.map((column) => {
                         const value = row[column.id];
                         return (
-                          <TableCell key={column.id} align={column.align}>
+                          <TableCell 
+                            key={column.id}
+                            align={column.align}
+                            sx={{ display: (column.hidden) ? 'none' : ''}}
+                            >
                             {column.format && typeof value === 'number'
                               ? column.format(value)
                               : value}

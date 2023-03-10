@@ -12,6 +12,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { getPayments, deletePayment } from "api/payments";
 import DeleteRowBotton from "components/DeleteRowBotton";
 import CustomTable from "components/customTable";
+import { showDate, showTime } from "components/utilityFunctions";
 
 const WaitingPayment2 = (props) => {
 
@@ -67,7 +68,7 @@ const WaitingPayment2 = (props) => {
           no: index + data.start,
           id: row.id,
           amount: row.amount,
-          paymentDate: row.paymentDate,
+          paymentDate: `${showDate(row.paymentDate)} , ${showTime(row.paymentDate)}`,
           referenceNo: row.referenceNo,
           deleteCol: (row.confirmation) ? "" :
             <DeleteRowBotton

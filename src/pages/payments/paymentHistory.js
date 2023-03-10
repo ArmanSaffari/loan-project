@@ -9,6 +9,7 @@ import {
   Typography
 } from '@mui/material';
 import CustomTable from "components/customTable";
+import { showDate, showTime } from "components/utilityFunctions";
 
 const PaymentHistory = (props) => {
 
@@ -55,7 +56,7 @@ const PaymentHistory = (props) => {
           no: index + data.start,
           id: row.id,
           amount: row.amount,
-          paymentDate: row.paymentDate,
+          paymentDate:  `${showDate(row.paymentDate)} , ${showTime(row.paymentDate)}`,
           referenceNo: row.referenceNo,
           comment: row.comment
         });

@@ -61,7 +61,7 @@ const AddPaymentForm = () => {
         <Typography sx={{fontWeight: 'bold'}}>Add Payment</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Grid container sx={{border: "1px solid gray"}}>
+        <Grid>
           <Grid item xs={12} mx={2}>
             <Collapse in={alert.show}> 
               <Alert

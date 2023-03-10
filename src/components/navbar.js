@@ -15,35 +15,42 @@ import { getUserPhoto } from 'api/file';
 import { useNavigate } from "react-router-dom";
 import { navbarTheme } from "components/theme";
 import { getMyInfo } from 'api/user';
-
+import { getUnreadMessageCount } from 'api/message';
 
 const pages = [
   {title: 'Membership', path: "/membership"},
   {title: 'Payments', path: "/payments"},
   {title: 'Loans', path: "/loans"},
-  {title: 'Guarantees', path: "/guarantees"}
+  {title: 'Guarantees', path: "/guarantees"},
+  {title: 'Messages', path: "/messages"}
 ];
 
 const settings = [
   {title: 'User Account', path: "/userInfo"},
+  {title: 'Messages', path: "/messages"},
   {title: 'Dashboard', path: "/dashboard"},
   {title: 'Admin Page', path: "/admin"},
   {title: 'Logout', path: "/"}
 ];
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar(props) {
 
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [userPhoto, setUserPhoto] = useState(null);
   const [myInfo, setMyInfo] = useState(null);
-
+  const [unreadMessageCount, setUnreadMessageCount] = useState(0);
   const navigate = useNavigate();
 
   useEffect( () => {
     fetchUserPhoto();
     fetchMyInfo();
-  }, []);
+    fetchUnreadMessage();
+  }, [props.updatePage]);
+  
+  // useEffect(() => {
+  //   fetchMessages();
+  // }, [props.updatePage]);
 
   const fetchUserPhoto = async () => {
     const { data } = await getUserPhoto({
@@ -60,6 +67,13 @@ function ResponsiveAppBar() {
       setMyInfo(data.value);
     }
   };
+
+  const fetchUnreadMessage = async () => {
+    const { data } = await getUnreadMessageCount();
+    if (data.success == true) {
+      setUnreadMessageCount(data.value);
+    } 
+  }
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -168,7 +182,7 @@ function ResponsiveAppBar() {
                 className='avatarContainer'>
 
                   <Badge
-                  badgeContent={4}
+                  badgeContent={unreadMessageCount}
                   color="secondary"
                   anchorOrigin={{
                     vertical: 'bottom',

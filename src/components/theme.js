@@ -173,6 +173,25 @@ export const loginTheme = createTheme({
           '&.loginAlert': {
             marginBottom: '60px',
           },
+
+         // modifying home grid:
+
+          '&.homeLogoGrid': {
+            marginTop: "50px",
+            marginLeft: "20px"
+          },
+
+          '&.homeDescriptionGrid': {
+            margin: "40px",
+            padding: "20px",
+            borderRadius: "30px",
+            backgroundColor: `${goldenColor}40`
+          },
+
+          '&.homeButtonContainer': {
+            marginLeft: "40px"
+          }
+
         },
       },
     },
@@ -257,7 +276,7 @@ export const navbarTheme = createTheme({
             display: 'block',
             color: darkGrayColor,
             fontSize: '0.8em',
-            margin: '0px 20px',
+            margin: '0px 8px',
           },
 
           '&.navbarMenuItem': {
@@ -327,6 +346,15 @@ export const navbarTheme = createTheme({
 });
 
 export const dashboardTheme = createTheme({
+
+  // palette: {
+  //   // mode: 'light',
+  //   success: {
+  //     light: goldenColor,
+  //     main: goldenColor,
+  //     dark: goldenColor
+  //   }
+  // },
 
   components: {
 
@@ -481,4 +509,35 @@ export const customTableTheme = createTheme({
       },
     },
   },
+});
+
+export const messageTheme = createTheme({
+
+  components: {
+
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          '&.messageDialogContainer': {
+            minWidth: '300px'
+          },
+        },
+      },
+    },
+    
+    MuiGrid: {
+      styleOverrides: {
+        root: {
+          '&.messageTitle': {
+            marginLeft: '10px',
+          },
+
+          '&.dialogTitleContainer': {
+            marginTop: '20px',
+          },
+        },
+      },
+    },
+  },
+  
 });

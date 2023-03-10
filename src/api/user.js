@@ -26,6 +26,3 @@ export const tokenCheck = async () => {
   return await APIClient.get(`${endpoint}/tokenCheck`);
 };
 
-export const changeUserPhoto = async (body) => {
-  return await APIClient.get(`${endpoint}/uploadPhoto`, body);
-};

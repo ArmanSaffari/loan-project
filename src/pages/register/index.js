@@ -28,7 +28,7 @@ function Register() {
 		alertShow: false,
 		imgFile: null,
 		imgPath: "icons/personIcon-lightGray.svg"
-});
+	});
 
 	const { handleSubmit, control, getValues } = useForm();
 	const navigate = useNavigate();

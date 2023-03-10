@@ -11,6 +11,7 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import PendingIcon from '@mui/icons-material/Pending';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteRowBotton from "components/DeleteRowBotton";
+import { showDate, showTime } from "components/utilityFunctions";
 
 const MemFeeHistory = (props) => {
 
@@ -50,7 +51,7 @@ const MemFeeHistory = (props) => {
         return({
           no: index + data.start,
           amount: row.monthlyMembershipFee,
-          effectiveFrom: row.effectiveFrom,
+          effectiveFrom: showDate(row.effectiveFrom),
           confirmed: (row.confirmation) ?
             <Tooltip title="confirmed"><TaskAltIcon color='success'/></Tooltip> :
             <Tooltip title="waiting to be confirmed"><PendingIcon color='warning' /></Tooltip>,

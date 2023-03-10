@@ -6,11 +6,11 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Alert, Collapse, Grid } from '@mui/material';
 import CustomTable from "components/customTable";
-import { getPaidMemFee, deleteMemFee } from "api/memFee";
+import { getPaidMemFee } from "api/memFee";
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import PendingIcon from '@mui/icons-material/Pending';
 import Tooltip from '@mui/material/Tooltip';
-import DeleteRowBotton from "components/DeleteRowBotton";
+import { showDate, showTime } from "components/utilityFunctions";
 
 const MemFeePaymentHistory = (props) => {
 
@@ -50,7 +50,7 @@ const MemFeePaymentHistory = (props) => {
         return({
           no: index + data.start,
           amount: row.monthlyMembershipFee,
-          date: row.Payment.paymentDate,
+          date: showDate(row.Payment.paymentDate),
           paymentId: row.Payment.id,
           referenceNo: row.Payment.referenceNo,
           confirmed: (row.Payment.confirmation) ?

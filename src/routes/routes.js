@@ -7,6 +7,7 @@ import payments from "pages/payments";
 import loans from "pages/loans";
 import guarantees from "pages/guarantees";
 import userInfo from "pages/userInfo";
+import messages from "pages/messages";
 
 const routes = [
   {
@@ -76,10 +77,17 @@ const routes = [
   {
     title: "admin",
     path: "/admin",
-    element: userInfo,
+    element: dashboard,
     isPrivate: false,
     childes: [],
-  }
+  },
+  {
+    title: "messages",
+    path: "/messages",
+    element: messages,
+    isPrivate: false,
+    childes: [],
+  },
 ];
 
 export default routes;

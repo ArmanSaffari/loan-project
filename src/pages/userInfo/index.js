@@ -8,7 +8,9 @@ import { Container,
   ImageListItemBar,
   IconButton,
   Tooltip,
-  Button 
+  Button,
+  Alert,
+  Collapse
 } from "@mui/material";
 import NavBar from "components/navbar";
 import { getUserPhoto } from 'api/file';
@@ -27,13 +29,17 @@ const UserInfo = () => {
   const [userPhoto, setUserPhoto] = useState(null);
   const [myInfo, setMyInfo] = useState(null);
   const [editMode, setEditMode] = useState(null);
-  const [openConfirmDialog, setOpenConfirmDialog] = useState(true);
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [image, setImage] = useState({ file: null, path: "" });
+  const [updatePage, setUpdatePage] = useState(false);
+  const [alert, setAlert] = useState({
+    show: false, severity: 'error', text: ""
+  });
 
   useEffect( () => {
     fetchUserPhoto()
     fetchMyInfo()
-  }, []);
+  }, [updatePage]);
 
   const fetchMyInfo = async () => {
     const { data } = await getMyInfo();
@@ -73,6 +79,9 @@ const UserInfo = () => {
   const handlePostSubmision = () => {
     setEditMode(null);
     fetchMyInfo();
+    setAlert(
+     { show: true, severity: 'success', text: "Data updated Successfully!" }
+    )
   };
 
   const handleOpenConfimDialog = (event) => {
@@ -85,11 +94,16 @@ const UserInfo = () => {
 
   const handleCloseDialog = () => {
     setOpenConfirmDialog(false)
+    setUpdatePage(!updatePage);
   };
 
-//  const dialogButtons = [
-//     {label: "button1", action: handlePhotoUpload},
-//   ];
+  const handleSetAlert = (data) => {
+    setAlert({
+      show: true,
+      severity: data.severity,
+      text: data.text
+    })
+  };
 
   return (
     <>
@@ -97,11 +111,30 @@ const UserInfo = () => {
 
         <Container maxWidth={false}>
 
-          <NavBar />
+          <NavBar updatePage={updatePage} />
 
           <Container maxWidth="lg">
 
             <Grid container mt={8}>
+
+            <Grid item xs={12}>
+              <Collapse in={alert.show}>
+                <Alert
+                  severity={alert.severity}
+                  variant="filled"
+                  onClose={() => {
+                    setAlert({
+                      ...alert,
+                      show: false,
+                      text: ""
+                    });
+                  }}
+                >
+                  {alert.text}
+                </Alert>
+              </Collapse>
+            </Grid>
+
             <Grid container item 
               direction="row"
               justifyContent="center"
@@ -130,7 +163,7 @@ const UserInfo = () => {
                             sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
                             aria-label="upload picture" component="label"
                           >
-                            <input hidden accept="image/*" type="file" name="userPhotoFile" onChange={handleOpenConfimDialog} />
+                            <input hidden accept="image/jpeg" type="file" name="userPhotoFile" onChange={handleOpenConfimDialog} />
                               <PhotoCamera />
                           </IconButton>
                         </Tooltip>
@@ -141,13 +174,10 @@ const UserInfo = () => {
                       open={openConfirmDialog}
                       handleClose={handleCloseDialog}
                       image={image}
+                      handleSetAlert={handleSetAlert}
                     />
-                    {/* <AlertDialogSlide
-                      title="asdad"
-                      content="sadasd"
-                      
-                      buttons={dialogButtons} /> */}
-                  </Grid>
+
+                </Grid>
             </Grid>
 
             <Grid item sm={0} md={1} >
