@@ -19,16 +19,20 @@ import SmartphoneIcon from '@mui/icons-material/Smartphone';
 import NumbersIcon from '@mui/icons-material/Numbers';
 import PersonIcon from '@mui/icons-material/Person';
 import { loginTheme } from 'components/theme';
+import { register, login } from 'api/user';
 
 function Register() {
   const [values, setValues] = useState({
 		passwordShow: false,
 		reEnterPasswordShow: false,
-		alertText: "",
-		alertShow: false,
 		imgFile: null,
 		imgPath: "icons/personIcon-lightGray.svg"
 	});
+	const [alert, setAlert] = useState({
+		show: false,
+		text: "",
+		severity: "error"
+	})
 
 	const { handleSubmit, control, getValues } = useForm();
 	const navigate = useNavigate();
@@ -53,27 +57,32 @@ function Register() {
 			let formData = new FormData();
 			formData.append('userData', JSON.stringify(registerData));
 			formData.append('userPhoto', values.imgFile);
-
-			const requestOptions = {
-				method: 'POST',
-			//	headers: { 'Content-Type': 'multipart/form-data' },
-				body: formData
-			}
 			
-			const response = await fetch('http://localhost:4000/api/user/registerWithPhoto', requestOptions)
-			const responseObj = await response.json();	
-			if (!response.ok) {throw responseObj.error}
-			navigate("/dashboard", {
-				state: { 
-					message: responseObj.message,
-					token: responseObj.token}
-			});
-			} catch (error) {
-				console.log(error)
-				setValues({
-					...values,
-					alertText: error.message,
-					alertShow: true
+			// using axios to send HTTP request:
+    	const { data } = await register(formData);
+
+			if (data.success) {
+				const response = await login({
+					emailAddress: event.emailAddress,
+					password: event.password
+				});
+				const loginData = response.data;
+				localStorage.setItem("token", loginData.token);
+				if (loginData.isAdmin) localStorage.setItem("isAdmin", true);
+				navigate("/dashboard", { state: { message: loginData.message } });
+			} else {
+				window.scrollTo({
+					top: 0,
+					behavior: 'smooth'
+				});
+				throw data.err
+			}
+
+			} catch (err) {
+				setAlert({
+					text: err.message,
+					show: true,
+					severity: "error"
 				})
 			}
 		};
@@ -107,18 +116,18 @@ function Register() {
 					<Grid item 
 					className="loginAlert"
 					xs={12}>
-						<Collapse in={values.alertShow}> 
+						<Collapse in={alert.show}> 
 							<Alert
-							severity="error"
+							severity={alert.severity}
 							variant="filled"
 							onClose={() => {
-								setValues({
-									...values,
-									alertText: "",
-									alertShow: false
+								setAlert({
+									...alert,
+									text: "",
+									show: false
 									})
 							}}
-							>{values.alertText}</Alert>
+							>{alert.text}</Alert>
 						</Collapse>
 					</Grid>
 

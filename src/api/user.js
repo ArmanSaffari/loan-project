@@ -6,8 +6,12 @@ export const login = async (body) => {
   return await APIClient.post(`${endpoint}/signin`, body);
 };
 
-export const register = async (body) => {
-  return await APIClient.post(`${endpoint}/register`, body);
+export const register = async (formData) => {
+  return await APIClient.post(`${endpoint}/registerWithPhoto`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
 };
 
 export const getMySummary = async () => {

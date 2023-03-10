@@ -18,6 +18,7 @@ const TextInput = ({ name, control, label, rules, icon, size, type, defaultValue
 	return (
 		<Controller
 			name={name}
+			key={name}
 			control={control}
 			rules={rules}
 			render={({
@@ -32,7 +33,7 @@ const TextInput = ({ name, control, label, rules, icon, size, type, defaultValue
 					onBlur={onBlur}
 					inputRef={ref}
 					error={invalid}
-					sx={(sx) ? sx : ""}
+					// sx={(sx) ? sx : ""}
 					label={label}
 					color="success"
 					// margin="dense"
@@ -51,6 +52,7 @@ const PasswordInput = ({name, control, label, rules, type, show, handleClickShow
 	return (
 		<Controller
 			name={name}
+			key={name}
 			control={control}
 			rules={rules}
 			render={({
@@ -104,6 +106,7 @@ function SelectInput({ control, name, label, rules, options }) {
   return (
 		<Controller
 			name={name}
+			key={name}
 			rules={rules}
 			control={control}
 			render={({

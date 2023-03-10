@@ -5,17 +5,17 @@ import { uploadFile } from 'api/file';
 const ChangePhotoDialog = (props) => {
 
   const handleUploadPhoto = async () => {
-    console.log(props.image.file);
+    // console.log(props.image.file);
     let formData = new FormData();
 		formData.append('file', props.image.file);
 		formData.append('data', JSON.stringify({category: "userPhoto"}));
 
-    console.log(formData);
+    // console.log(formData);
     const { data } = await uploadFile(formData)
 
     const alert = (data.success) ? 
       {show: true, severity: "success", text: "New profile picture has been uploaded succussfully!"} :
-      {show: true, severity: "danger", text: data.message } 
+      {show: true, severity: "error", text: data.message } 
     
     props.handleSetAlert(alert);
     props.handleClose();
