@@ -74,7 +74,7 @@ const PasswordInput = ({name, control, label, rules, type, show, handleClickShow
 						value={value}
 						error={invalid}
 						fullWidth
-						margin="dense"
+						// margin="dense"
 						color="success"
 						variant="outlined"
 						size={size}

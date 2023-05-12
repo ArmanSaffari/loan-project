@@ -30,7 +30,7 @@ const DuePayemnts = () => {
       </AccordionSummary>
       <AccordionDetails>
         <Typography>
-          {"Due membership Fees need to be paide: "}
+          {"Due membership Fees need to be paid: "}
           <strong style={{color: 'crimson'}}>
             {(userSummary) ?`${Math.max(0, (userSummary.memFeeRemained).toFixed(2))}$` : "..."}
           </strong>

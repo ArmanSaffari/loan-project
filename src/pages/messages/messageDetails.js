@@ -8,7 +8,7 @@ import { Typography,
   DialogContent,
   DialogContentText,
   DialogActions,
-  Button
+  Button,
  } from '@mui/material';
  
 //icons:
@@ -19,6 +19,13 @@ import { messageTheme } from 'components/theme';
 import { showDate, showTime } from "components/utilityFunctions";
 
 const MessageDetails = ( { onClose, message, show }) => {
+
+  const MessageRender = (messageContent) => {
+    console.log(messageContent)
+    return (
+      messageContent
+    )
+  };
 
   return (
     <ThemeProvider theme={messageTheme}>
@@ -49,13 +56,13 @@ const MessageDetails = ( { onClose, message, show }) => {
 
           <DialogContent>
             <DialogContentText>
-                {message.content}
+              {message.content}
             </DialogContentText>
           </DialogContent>
                       
           <DialogActions>
             <Button href={message.link}
-            disabled={(message.link) ? true : false}
+            disabled={(message.link === null) ? true : false}
             >
               Link
             </Button>
@@ -69,3 +76,32 @@ const MessageDetails = ( { onClose, message, show }) => {
 }
 
 export default MessageDetails;
+
+
+{/* <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Dessert (100g serving)</TableCell>
+            <TableCell align="right">Calories</TableCell>
+            <TableCell align="right">Fat&nbsp;(g)</TableCell>
+            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableRow
+            key="FY"
+            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+          >
+            <TableCell component="th" scope="row">
+              Frozen Yoghurt
+            </TableCell>
+            <TableCell align="right">159</TableCell>
+            <TableCell align="right">6</TableCell>
+            <TableCell align="right">37</TableCell>
+            <TableCell align="right">24</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer> */}

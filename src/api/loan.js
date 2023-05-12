@@ -16,5 +16,5 @@ export const getLoans = async (params) => {
 };
 
 export const deleteLoanRequest = async (body) => {
-  return await APIClient.delete(`${endpoint}/myLoans`, body)
+  return await APIClient.post(`${endpoint}/cancelRequest`, {recordId: 43})
 };

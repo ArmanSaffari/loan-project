@@ -16,7 +16,7 @@ const  createCards = (userSummary) => {
       imgSrc: "",
       title: "Monthly Membership Fee",
       content: `$ ${userSummary.memFeeToBePaid.lastMemFee}`,
-      path:"/payments" 
+      path:"/membership" 
     },
     {
       imgSrc: "",

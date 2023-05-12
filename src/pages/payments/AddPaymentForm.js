@@ -104,7 +104,7 @@ const AddPaymentForm = () => {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={4} lg={3} px={2} pt={2}>
+              <Grid item xs={12} sm={6} md={4} lg={3} px={2} pt={1}>
                 <SelectInput
                   control={control}
                   name="AccountId"

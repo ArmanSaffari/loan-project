@@ -12,14 +12,16 @@ import MemFeePaymentHistory from "./MemFeePaymentHistory";
 const Membership = () => {
 
   const [lastMemFee, setLastMemFee] = useState();
+  const [updateNavbar, setUpdateNavbar] = useState(false);
 
   const fetchLastMemFee = async () => {
     const { data } = await getMemFee();
     if (data.success == true) setLastMemFee(data);
   };
 
-  useLayoutEffect(() => { 
+  useEffect(() => { 
     fetchLastMemFee();
+    setUpdateNavbar(!updateNavbar);
   }, []);
     
   return (
@@ -28,7 +30,7 @@ const Membership = () => {
 
         <Container maxWidth={false} className="dashboardContainer">
           
-          <NavBar />
+          <NavBar updatePage={updateNavbar}/>
 
           <Container maxWidth="lg">
 

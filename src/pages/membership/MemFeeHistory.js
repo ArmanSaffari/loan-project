@@ -133,7 +133,7 @@ const MemFeeHistory = (props) => {
               </Grid>
               <Grid item xs={12} mt={2} mx={2}>
                 <Typography mb={2}>
-                  {`Total number of ${pagination.total} confirmed payments found!`}
+                  {`Total number of ${pagination.total} requests found!`}
                 </Typography>
                 <CustomTable 
                   rows={rows}

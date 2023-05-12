@@ -47,10 +47,6 @@ function ResponsiveAppBar(props) {
     fetchMyInfo();
     fetchUnreadMessage();
   }, [props.updatePage]);
-  
-  // useEffect(() => {
-  //   fetchMessages();
-  // }, [props.updatePage]);
 
   const fetchUserPhoto = async () => {
     const { data } = await getUserPhoto({
@@ -244,7 +240,17 @@ function ResponsiveAppBar(props) {
                     >
                     <Button className="navbarMenuItem"
                       onClick={ () => (setting.title == "Logout") ? handleLogOut() : navigate(setting.path) }>
-                      {setting.title}
+                      <Badge
+                        badgeContent={(setting.title == "Messages")? unreadMessageCount : 0 }
+                        color="secondary"
+                        anchorOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}>
+                        <Typography className="navbarMenuItemText">
+                            {setting.title}
+                          </Typography>
+                      </Badge>
                     </Button>
                   </MenuItem>
                 ))}

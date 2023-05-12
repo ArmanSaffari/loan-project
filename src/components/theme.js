@@ -294,6 +294,24 @@ export const navbarTheme = createTheme({
       },
     },
 
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          '&.navbarMenuItemText': {
+            color: darkBlueColor,
+            fontSize: '1em',
+            marginLeft: '10px',
+            marginRight: '10px',
+            letterSpacing: '0.2em',
+            '&:hover': {
+              fontWeight: 'bold',
+              letterSpacing: '0.5em'
+            }
+          }
+        },
+      },
+    },
+
     MuiContainer: {
       styleOverrides: {
         root: {

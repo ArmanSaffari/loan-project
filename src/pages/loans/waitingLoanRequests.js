@@ -130,7 +130,7 @@ const WaitingLoanRequests = () => {
 
         <Grid item xs={12} mt={2} mx={2}>
           <Typography>
-            {`Total number of ${pagination.total} confirmed payments found!`}
+            {`Total number of ${pagination.total} waiting loan request(s) found!`}
           </Typography>
         </Grid>
 

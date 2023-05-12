@@ -63,7 +63,7 @@ const MessageList = (props) => {
           <Tooltip title="unread"><MailIcon /></Tooltip>,
           title: row.title,
           date: `${showDate(row.createdAt)} , ${showTime(row.createdAt)}`,
-          isFlag: (row.isFlag) ? null :
+          isFlag: (row.isFlag == false) ? null :
           <Tooltip title="flagged"><FlagCircleIcon /></Tooltip>,
         });
       });

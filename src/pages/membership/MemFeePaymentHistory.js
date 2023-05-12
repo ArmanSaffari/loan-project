@@ -49,7 +49,7 @@ const MemFeePaymentHistory = (props) => {
       let rowValues = data.value.map((row, index) => {        
         return({
           no: index + data.start,
-          amount: row.monthlyMembershipFee,
+          amount: row.amount,
           date: showDate(row.Payment.paymentDate),
           paymentId: row.Payment.id,
           referenceNo: row.Payment.referenceNo,
