@@ -30,22 +30,15 @@ export default function PlainTable(props) {
         <Table stickyHeader
           aria-label="sticky table"
           size="small">
-          <TableHead
-            sx={{
-              bgcolor: 'primary.main',
-              color: 'primary.main'
-            }}>
-            <TableRow sx={{
-              bgcolor: 'primary.main',
-              color: 'primary.main'
-            }}>
+          <TableHead>
+            <TableRow>
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
                   sx={{
-                    bgcolor: 'primary.main',
+                    bgcolor: 'lightgray',
                     fontWeight: 'bold'
                   }}
                 >

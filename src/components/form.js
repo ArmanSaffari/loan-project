@@ -13,7 +13,7 @@ import { Controller, useController } from "react-hook-form";
 // import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 // form components:
-const TextInput = ({ name, control, label, rules, icon, size, type, defaultValue, sx}) => {
+const TextInput = ({ name, control, label, rules, icon, size, type, defaultValue, sx, disabled}) => {
 	
 	return (
 		<Controller
@@ -29,6 +29,7 @@ const TextInput = ({ name, control, label, rules, icon, size, type, defaultValue
 					defaultValue={(defaultValue) ? defaultValue : ""}
 					type={type}
 					value={value}
+					disabled={(disabled) ? true : false}
 					onChange={onChange}
 					onBlur={onBlur}
 					inputRef={ref}

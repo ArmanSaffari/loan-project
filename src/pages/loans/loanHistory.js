@@ -15,7 +15,7 @@ const LoanHistory = () => {
 
   const [pagination, setPagination] = useState({
     total: 0,
-    limit: 2,
+    limit: 10,
     start: 0,
     end: 0,
     page: 1

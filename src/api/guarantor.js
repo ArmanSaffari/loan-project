@@ -19,3 +19,7 @@ export const getGuarantorRequest = async (params) => {
 export const confirmGuarantorship = async (body) => {
   return await APIClient.put(`${endpoint}/guarantorConfirmation`, body)
 }
+
+export const deleteGuarantor = async (body) => {
+  return await APIClient.delete(`${endpoint}`, body)
+}

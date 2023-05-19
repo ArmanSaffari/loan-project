@@ -8,6 +8,8 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import PlainTable from 'components/table';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import PendingIcon from '@mui/icons-material/Pending';
+import DeleteRowBotton from 'components/DeleteRowBotton';
+import { deleteGuarantor, guarantorListByLoanId } from "api/guarantor";
 
 const AddGuarantorForm = (props) => {
 
@@ -17,7 +19,8 @@ const AddGuarantorForm = (props) => {
     { id: 'no', label: 'No.', minWidth: 20, align: 'center' },
     { id: 'name', label: 'Guarantor Name', minWidth: 120, align: 'center' },
     { id: 'guarantor', label: 'Guarantor', minWidth: 60, align: 'center' },
-    { id: 'admin', label: 'Admin', minWidth: 60, align: 'center' }
+    { id: 'admin', label: 'Admin', minWidth: 60, align: 'center' },
+    { id: 'deleteCol', label: '', minWidth: 20, align: 'center' }
   ];
 
   const rows = props.guarantorRows.map(
@@ -33,16 +36,37 @@ const AddGuarantorForm = (props) => {
         <Tooltip title="confirmed by admin.">
             <TaskAltIcon color='success'/></Tooltip> :
         <Tooltip title="needs to be confirmed by admin!">
-          <PendingIcon color='warning' /></Tooltip>
+          <PendingIcon color='warning' /></Tooltip>,
+      deleteCol: <DeleteRowBotton
+        recordId={record.recordId}
+        deleteHandler={deleteGuarantor}
+      /> 
     }}
   );
+
+// under editing
+  const [guarantorRows, setGuarantorRows] = useState([]);
+
+  const fetchGuarantorList = async (loanId) => {
+    const { data } = await guarantorListByLoanId({
+      params: { loanId: loanId }
+    });
+    setGuarantorRows( data.foundRecords );
+  };
+
+  useEffect(() => {
+    fetchGuarantorList(props.loanId);
+  }, [props.loanId]);
+
 
   return (
     <>
       <Grid container>
         <Grid item xs={12} mb={1}>
           <Alert icon={false} severity="success" >
-            Now, please specify your guarantors below:
+            {(props.guarantorRows.length >= 2) ? 
+            "Two guarantor have been successfully added!":
+            "Now, please specify your guarantors below:"}
           </Alert>
         </Grid>
 
@@ -60,6 +84,7 @@ const AddGuarantorForm = (props) => {
               size="small"
               rules={{ required: true }}
               icon={<AttachMoneyIcon />}
+              disabled={(props.guarantorRows.length >= 2) ? true : false}
             />
           </Grid>
 
@@ -70,12 +95,14 @@ const AddGuarantorForm = (props) => {
               label="Guarantor Last Name"
               size="small"
               rules={{ required: true }}
+              disabled={(props.guarantorRows.length >= 2) ? true : false}
               icon={<PersonIcon />}
             />
           </Grid>
 
           <Grid item container xs={12} justifyContent="flex-end">
-            <Tooltip title="Add Guarantor">
+            <Tooltip title="Add Guarantor"
+            disabled={(props.guarantorRows.length >= 2) ? true : false}>
               <IconButton type="submit">
                 <AddCircleIcon fontSize="large" color="info" />
               </IconButton>
@@ -86,7 +113,7 @@ const AddGuarantorForm = (props) => {
         </form> 
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid item xs={12} sx={{my: 4}}>
         <PlainTable 
           columns={columns}
           rows={rows} />
@@ -95,14 +122,20 @@ const AddGuarantorForm = (props) => {
         variant="contained"
         onClick={props.finishHandler}
         disabled={ (props.guarantorRows.length >= 2) ? false : true }
-        sx={{ mt: 1, mr: 1, display: "block" }}
+        sx={{
+          mt: 1,
+          mr: 1,
+          display: (props.modal) ? "none" : "block" }}
         > FINISH
       </Button>
       <Button
         variant="outlined"
         onClick={props.addLaterHandler}
         disabled={ (props.loanId) ? false : true }
-        sx={{ mt: 1, mr: 1, display: "block" }}
+        sx={{
+          mt: 1,
+          mr: 1,
+          display: (props.modal) ? "none" : "block" }}
         > Add Guarantors Later!
       </Button>
     </>

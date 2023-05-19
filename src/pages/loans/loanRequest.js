@@ -236,7 +236,7 @@ const LoanRequest = () => {
                         <div>
                           
                           <Button
-                            sx={{mt: 1, mr: 1, display: (index === 1) ? "block" : "none"}}
+                            sx={{my: 2, mr: 1, display: (index === 1) ? "block" : "none"}}
                             onClick={handleBack}>
                             Back
                           </Button>
