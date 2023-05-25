@@ -20,6 +20,7 @@ const GuaranteeConfirmation = (props) => {
   const handleSubmit = async () => {
     try {
       closeDialog()
+
       const body = { 
         recordId: props.recordId,
         loanId: props.loanId,
@@ -92,7 +93,7 @@ return (
     </Grid>
     <AlertDialogSlide
       title="Are you Sure?"
-      content={`Are you sure you want to ${confirmed} ${(confirmed) ? "ACCEPT" : "REJECT"} guarantee request of ${props.personName}?`}
+      content={`Are you sure you want to ${(confirmed) ? "ACCEPT" : "REJECT"} guarantee request of ${props.personName}?`}
       open={openDialog}
       handleClose={closeDialog}
       buttons={dialogButtons}

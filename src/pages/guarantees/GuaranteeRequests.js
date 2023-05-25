@@ -58,16 +58,17 @@ const GuaranteeRequest = () => {
         return({
           no: index + data.start,
           loanId: row.Loan.id,
-          name: `${row.User.firstName} ${row.User.lastName}`,
-          phoneNumber: row.User.phoneNumber,
+          name: `${row.Loan.User.firstName} ${row.Loan.User.lastName}`,
+          phoneNumber: row.Loan.User.phoneNumber,
           loanAmount: row.Loan.loanAmount,
           installmentAmount: row.Loan.installmentAmount,
           confirmButton:
             <GuaranteeConfirmation
               handleAlert={handleAlert}
-              recordId={row.recordId}
+              data-record={row.recordId}
+              recordId={row.id}
               loanId={row.Loan.id}
-              personName={`${row.User.firstName} ${row.User.lastName}`}
+              personName={`${row.Loan.User.firstName} ${row.Loan.User.lastName}`}
             />
         });
       });
@@ -99,7 +100,6 @@ const GuaranteeRequest = () => {
 
   const handleAlert = (newAlert) => {
     setAlert(newAlert);
-    console.log("why god, why us???")
     fetchGuarantees();
   };
   // const filterList = [
@@ -142,10 +142,6 @@ const GuaranteeRequest = () => {
           <Typography>
             {`Total number of ${pagination.total} gurantee requests found!`}
           </Typography>
-          {/* <FilterField
-            label="Fliter"
-            options={filterList}
-            /> */}
         </Grid>
 
         <Grid item xs={12} mt={2} mx={2}>

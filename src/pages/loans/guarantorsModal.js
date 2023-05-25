@@ -31,17 +31,18 @@ const GuarantorsModal = (props) => {
     p: 4,
   };
 
-  // const [guarantorRows, setGuarantorRows] = useState([]);
+  const [guarantorRows, setGuarantorRows] = useState([]);
+
   const [alert, setAlert] = useState({
     show: false, severity: 'error', text: ""
   });
 
-  // const fetchGuarantorList = async (loanId) => {
-  //   const { data } = await guarantorListByLoanId({
-  //     params: { loanId: loanId }
-  //   });
-  //   setGuarantorRows( data.foundRecords );
-  // };
+  const fetchGuarantorList = async (loanId) => {
+    const { data } = await guarantorListByLoanId({
+      params: { loanId: loanId }
+    });
+    setGuarantorRows( data.foundRecords );
+  };
 
   const columns = [
     { id: 'no', label: 'No.', minWidth: 20, align: 'center' },
@@ -57,6 +58,10 @@ const GuarantorsModal = (props) => {
     setAlert(alarm);
   };
 
+  const updatTable = () => {
+    fetchGuarantorList(props.loanId)
+  }
+
   const handleAddGuarantor = async (event) => {
     try {
       setAlert({
@@ -67,7 +72,7 @@ const GuarantorsModal = (props) => {
         ...event
       }
       const { data } = await addGuarantor(body);
-      // fetchGuarantorList(props.loanId)
+      updatTable();
       setAlert({
         show: true,
         severity: (data.success) ? 'success' : 'warning',
@@ -90,9 +95,9 @@ const GuarantorsModal = (props) => {
     });
   };
 
-  // useEffect(() => {
-  //   fetchGuarantorList(props.loanId);
-  // }, [props.loanId]);
+  useEffect(() => {
+    updatTable();
+  }, [props.loanId]);
 
 return (
   <Dialog
@@ -109,9 +114,10 @@ return (
        <AddGuarantorForm
         submitHandler={handleAddGuarantor}
         loanId={props.loanId}
-        // guarantorRows={guarantorRows}
+        guarantorRows={guarantorRows}
         finishHandler={props.handleClose}
         addLaterHandler={handleAddLater}
+        updateHandler={updatTable}
         modal={true}/>
       </DialogContentText>
     </DialogContent>

@@ -15,7 +15,8 @@ const AddGuarantorForm = (props) => {
 
   const { handleSubmit, register, control,  formState: { errors } } = useForm();
   
-  const columns = (props.guarantorRows.length == 0) ? [] : [
+  const columns = (props. guarantorRows
+.length == 0) ? [] : [
     { id: 'no', label: 'No.', minWidth: 20, align: 'center' },
     { id: 'name', label: 'Guarantor Name', minWidth: 120, align: 'center' },
     { id: 'guarantor', label: 'Guarantor', minWidth: 60, align: 'center' },
@@ -23,7 +24,8 @@ const AddGuarantorForm = (props) => {
     { id: 'deleteCol', label: '', minWidth: 20, align: 'center' }
   ];
 
-  const rows = props.guarantorRows.map(
+  const rows = props. guarantorRows
+.map(
     (record, index) => {return {
       no: index + 1,
       name: `${record.User.firstName} ${record.User.lastName}`,
@@ -40,23 +42,11 @@ const AddGuarantorForm = (props) => {
       deleteCol: <DeleteRowBotton
         recordId={record.recordId}
         deleteHandler={deleteGuarantor}
+        updateHandler={props.updateHandler}
+        alarmHandler={props.updateHandler}
       /> 
     }}
   );
-
-// under editing
-  const [guarantorRows, setGuarantorRows] = useState([]);
-
-  const fetchGuarantorList = async (loanId) => {
-    const { data } = await guarantorListByLoanId({
-      params: { loanId: loanId }
-    });
-    setGuarantorRows( data.foundRecords );
-  };
-
-  useEffect(() => {
-    fetchGuarantorList(props.loanId);
-  }, [props.loanId]);
 
 
   return (
@@ -64,7 +54,8 @@ const AddGuarantorForm = (props) => {
       <Grid container>
         <Grid item xs={12} mb={1}>
           <Alert icon={false} severity="success" >
-            {(props.guarantorRows.length >= 2) ? 
+            {(props. guarantorRows
+.length >= 2) ? 
             "Two guarantor have been successfully added!":
             "Now, please specify your guarantors below:"}
           </Alert>
@@ -84,7 +75,8 @@ const AddGuarantorForm = (props) => {
               size="small"
               rules={{ required: true }}
               icon={<AttachMoneyIcon />}
-              disabled={(props.guarantorRows.length >= 2) ? true : false}
+              disabled={(props. guarantorRows
+.length >= 2) ? true : false}
             />
           </Grid>
 
@@ -95,14 +87,16 @@ const AddGuarantorForm = (props) => {
               label="Guarantor Last Name"
               size="small"
               rules={{ required: true }}
-              disabled={(props.guarantorRows.length >= 2) ? true : false}
+              disabled={(props. guarantorRows
+.length >= 2) ? true : false}
               icon={<PersonIcon />}
             />
           </Grid>
 
           <Grid item container xs={12} justifyContent="flex-end">
             <Tooltip title="Add Guarantor"
-            disabled={(props.guarantorRows.length >= 2) ? true : false}>
+            disabled={(props. guarantorRows
+.length >= 2) ? true : false}>
               <IconButton type="submit">
                 <AddCircleIcon fontSize="large" color="info" />
               </IconButton>
@@ -121,7 +115,8 @@ const AddGuarantorForm = (props) => {
       <Button
         variant="contained"
         onClick={props.finishHandler}
-        disabled={ (props.guarantorRows.length >= 2) ? false : true }
+        disabled={ (props. guarantorRows
+.length >= 2) ? false : true }
         sx={{
           mt: 1,
           mr: 1,

@@ -3,7 +3,6 @@ import { APIClient } from "api/config";
 const endpoint = "guarantor";
 
 export const addGuarantor = async (body) => {
-  console.log(body)
   return await APIClient.post(`${endpoint}/addGuarantor`, body)
 };
 

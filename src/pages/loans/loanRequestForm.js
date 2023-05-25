@@ -55,7 +55,8 @@ const LoanRequestForm = (props) => {
             fieldState: { error, invalid },
           }) => (
             <Grid container sx={{ borderRadius: "4px",
-              border: `1px solid ${(error) ? "#d32f2f" : "lightgray"}` }} >
+              border: `1px solid ${(error) ? "#d32f2f" : "lightgray"}`,
+              }} >
               <FormControl
                 sx={{ left: "20px"}}
                 onChange={onChange}
@@ -92,22 +93,26 @@ const LoanRequestForm = (props) => {
           )}
         />
 
-        <TextInput
-          name="loanAmount"
-          control={control}
-          label="Loan Amount"
-          size="small"
-          rules={{ required: true }}
-          icon={<AttachMoneyIcon />}/>
-
-        <TextInput
-          name="installmentNo"
-          control={control}
-          label="Number of Installments"
-          size="small"
-          rules={{ required: true }}
-          icon={<PaymentsIcon />}/>
-
+        <Grid container sx={{my: 2}}>
+          <TextInput
+            name="loanAmount"
+            control={control}
+            label="Loan Amount"
+            size="small"
+            rules={{ required: true }}
+            icon={<AttachMoneyIcon />}/>
+        </Grid>
+        
+        <Grid container sx={{my: 2}}>
+          <TextInput
+            name="installmentNo"
+            control={control}
+            label="Number of Installments"
+            size="small"
+            rules={{ required: true }}
+            icon={<PaymentsIcon />}/>
+        </Grid>
+        
         <Button
           variant="contained"
           type="submit"

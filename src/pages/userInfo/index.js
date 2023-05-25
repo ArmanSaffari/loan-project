@@ -142,9 +142,9 @@ const UserInfo = () => {
                 <Grid item m={2}>
                   <ImageListItem >
                     <img
-                      src={userPhoto || "person.png"}
+                      src={userPhoto || "icons/personIcon-lightGray.svg"}
                       alt="User Photo"
-                      style={{maxWidth: "300px", objectFit: "contain"}}
+                      style={{maxWidth: "300px", objectFit: "contain", minHeight: "300px"}}
                     />
                     <ImageListItemBar
                       title={ (myInfo) ?

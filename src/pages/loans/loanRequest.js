@@ -67,6 +67,10 @@ const LoanRequest = () => {
     }
   };
   
+  const updatTable = () => {
+    fetchGuarantorList(newLoanId)
+  }
+
   const handleAddGuarantor = async (event) => {
     try {
       setAlert({
@@ -175,6 +179,7 @@ const LoanRequest = () => {
         submitHandler={handleAddGuarantor}
         loanId={newLoanId}
         guarantorRows={guarantorRows}
+        updateHandler={updatTable}
         finishHandler={handleFinish}
         addLaterHandler={handleAddLater} />
     },

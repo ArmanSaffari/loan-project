@@ -27,6 +27,7 @@ const WaitingLoanRequests = () => {
 
   const handleCloseModal = () => {
     setOpenModal(false);
+    fetchLoans();
   };
 
   const handleOpenModal = (event) => {
@@ -109,14 +110,16 @@ const WaitingLoanRequests = () => {
               variant="contained"
               onClick={handleOpenModal}
               data-loan={row.id}
-            >Add Guarantor(s)!</Button> :
+              color="warning"
+            >Add Guarantor!</Button> :
             (guarantors.nextStep == "Check Guarantors' Status!") ?
             <Button
               size="small"
               variant="contained"
               onClick={handleOpenModal}
               data-loan={row.id}
-            >Check Guarantors' Status!</Button> :
+              color="success"
+            >Check Status!</Button> :
             guarantors.nextStep,
           deleteCol: 
             <DeleteRowBotton

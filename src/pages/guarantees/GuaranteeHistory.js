@@ -72,8 +72,8 @@ const GuaranteeHistory = () => {
       let rowValues = data.value.map((row, index) => {        
         return({
           no: index + data.start,
-          id: row.recordId,
-          name: `${row.User.firstName} ${row.User.lastName}`,
+          loanId: row.Loan.id,
+          name: `${row.Loan.User.firstName} ${row.Loan.User.lastName}`,
           loanAmount: row.Loan.loanAmount,
           installmentAmount: row.Loan.installmentAmount,
           guarantorConfirmation: statusIcon(row.guarantorConfirmation),
