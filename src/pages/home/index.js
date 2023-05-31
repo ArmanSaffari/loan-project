@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { loginTheme } from "components/theme";
 import { ThemeProvider } from '@mui/material/styles';
 import { Typography, Grid, Button, Container, ButtonBase } from "@mui/material";
+import logo from "logos/Kish Financial Institution-darkGray.svg";
 
 const Home = () => {
   return (
@@ -20,9 +21,8 @@ const Home = () => {
               <img
                 alt="Kish Financial Institute Logo"
                 width="300px"
-                src="./logos/Kish Financial Institution-darkGray.svg"></img>
+                src={logo} />
           </Grid>
-
           <Grid item
             xs={11} sm={8} md={5}
             className="homeDescriptionGrid"

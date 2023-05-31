@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { navbarTheme } from "components/theme";
 import { getMyInfo } from 'api/user';
 import { getUnreadMessageCount } from 'api/message';
+import logo from "logos/Kish Financial Institution-darkGray.svg";
 
 const pages = [
   {title: 'Membership', path: "/membership"},
@@ -154,7 +155,7 @@ function ResponsiveAppBar(props) {
               >
               <img 
               className='navbarLogo'
-              src='logos/Kish Financial Institution-darkGray.svg' alt='KFI'
+              src={logo} alt='KFI'
               />
             </Box>
             

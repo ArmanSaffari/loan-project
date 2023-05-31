@@ -1,4 +1,7 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import bgPhoto from "images/backgroundImage.png";
+import bgPhotoRegister from "images/backgroundImage-register.png";
+import bgPhotDashboard from "images/backgroundImage-dashboard.png"
 
 const goldenColor = '#E8C45F';
 const darkBlueColor = '#1B307D';
@@ -118,7 +121,7 @@ export const loginTheme = createTheme({
             padding: '0px',
             height: '100vh',
             width: '100vw',
-            background: '#ffffff url("./images/backgroundImage.png") no-repeat right top',
+            background: `#ffffff url(${bgPhoto}) no-repeat right top`,
             backgroundSize: 'cover',
             backgroundClip: "border-box",
           },
@@ -126,7 +129,7 @@ export const loginTheme = createTheme({
           '&.mainRegisterContainer': {
             padding: '0px',
             width: '100vw',
-            background: '#ffffff80 url("./images/backgroundImage-register.png") no-repeat center center',
+            background: `#ffffff80 url(${bgPhotoRegister}) no-repeat center center`,
             backgroundSize: 'cover',
             backgroundClip: "border-box",
           }
@@ -365,15 +368,6 @@ export const navbarTheme = createTheme({
 
 export const dashboardTheme = createTheme({
 
-  // palette: {
-  //   // mode: 'light',
-  //   success: {
-  //     light: goldenColor,
-  //     main: goldenColor,
-  //     dark: goldenColor
-  //   }
-  // },
-
   components: {
 
     MuiContainer: {
@@ -382,7 +376,7 @@ export const dashboardTheme = createTheme({
           '&.dashboardContainer': {
             
             minHeight: '100vh',
-            background: '#ffffff url("./images/backgroundImage-dashboard.png") no-repeat center top',
+            background: `#ffffff url(${bgPhotDashboard}) no-repeat center top`,
             backgroundSize: 'cover',
             backgroundClip: "border-box",
 
