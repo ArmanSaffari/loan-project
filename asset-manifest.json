@@ -1,10 +1,14 @@
 {
   "files": {
-    "main.js": "/loan-project/static/js/main.bd44a85f.js",
-    "static/js/27.b8c2df7c.chunk.js": "/loan-project/static/js/27.b8c2df7c.chunk.js",
-    "index.html": "/loan-project/index.html"
+    "main.js": "/static/js/main.f27a6bc1.js",
+    "static/js/27.b8c2df7c.chunk.js": "/static/js/27.b8c2df7c.chunk.js",
+    "static/media/backgroundImage-register.png": "/static/media/backgroundImage-register.743f7561fed4923791cc.png",
+    "static/media/backgroundImage.png": "/static/media/backgroundImage.6893796dbea31f5235e6.png",
+    "static/media/backgroundImage-dashboard.png": "/static/media/backgroundImage-dashboard.16e386666d0cf4114037.png",
+    "static/media/Kish Financial Institution-darkGray.svg": "/static/media/Kish Financial Institution-darkGray.5ed3522b085dd60e8f1e8f2aa9c53bcc.svg",
+    "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/js/main.bd44a85f.js"
+    "static/js/main.f27a6bc1.js"
   ]
 }
